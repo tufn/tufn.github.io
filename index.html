@@ -7,10 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta name="description" content="Tufn - A minimalist, elegant productivity app for notes, tasks, canvas, and calendar">
-    <meta property="og:title" content="Tufn - Minimalist Productivity App">
-    <meta property="og:description" content="All-in-one productivity app with elegant design">
-    <meta property="og:image" content="https://tufn.app/preview.png">
-    <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
     <!-- Theme Toggle -->
@@ -26,7 +22,6 @@
             </div>
             <div class="nav-links">
                 <a href="#features">Features</a>
-                <a href="#reviews">Reviews</a>
                 <a href="#download">Download</a>
                 <a href="#contact">Contact</a>
             </div>
@@ -70,20 +65,233 @@
             </div>
             <div class="hero-preview">
                 <div class="app-preview">
-                    <div class="app-sidebar">
-                        <div class="sidebar-item active">Dashboard</div>
-                        <div class="sidebar-item">Canvas</div>
-                        <div class="sidebar-item">Notes</div>
-                        <div class="sidebar-item">Tasks</div>
-                        <div class="sidebar-item">Calendar</div>
+                    <!-- App Tabs -->
+                    <div class="app-tabs">
+                        <button class="app-tab active" data-tab="dashboard">
+                            <i class="fas fa-chart-pie"></i> Dashboard
+                        </button>
+                        <button class="app-tab" data-tab="canvas">
+                            <i class="fas fa-paint-brush"></i> Canvas
+                        </button>
+                        <button class="app-tab" data-tab="notes">
+                            <i class="fas fa-sticky-note"></i> Notes
+                        </button>
+                        <button class="app-tab" data-tab="tasks">
+                            <i class="fas fa-tasks"></i> Tasks
+                        </button>
+                        <button class="app-tab" data-tab="calendar">
+                            <i class="fas fa-calendar-alt"></i> Calendar
+                        </button>
                     </div>
+                    
+                    <!-- App Content -->
                     <div class="app-content">
-                        <div class="time-display">14:30</div>
-                        <div class="dashboard-grid">
-                            <div class="preview-card"></div>
-                            <div class="preview-card"></div>
-                            <div class="preview-card"></div>
-                            <div class="preview-card"></div>
+                        <!-- Dashboard Tab -->
+                        <div class="tab-content active" id="dashboard-tab">
+                            <div class="time-display" id="current-time">14:30</div>
+                            <div class="dashboard-grid">
+                                <div class="preview-card card-1">
+                                    <div class="card-header">
+                                        <i class="fas fa-tasks"></i>
+                                        <h4>Today's Tasks</h4>
+                                    </div>
+                                    <div class="task-item completed">
+                                        <span class="task-check"><i class="fas fa-check"></i></span>
+                                        <span class="task-text">Design review meeting</span>
+                                    </div>
+                                    <div class="task-item">
+                                        <span class="task-check"></span>
+                                        <span class="task-text">Finish project proposal</span>
+                                    </div>
+                                    <div class="task-item">
+                                        <span class="task-check"></span>
+                                        <span class="task-text">Email team updates</span>
+                                    </div>
+                                </div>
+                                <div class="preview-card card-2">
+                                    <div class="card-header">
+                                        <i class="fas fa-calendar-day"></i>
+                                        <h4>Upcoming Events</h4>
+                                    </div>
+                                    <div class="event-item">
+                                        <span class="event-time">15:00</span>
+                                        <span class="event-text">Team Sync</span>
+                                    </div>
+                                    <div class="event-item">
+                                        <span class="event-time">17:30</span>
+                                        <span class="event-text">Client Call</span>
+                                    </div>
+                                </div>
+                                <div class="preview-card card-3">
+                                    <div class="card-header">
+                                        <i class="fas fa-bullseye"></i>
+                                        <h4>Quick Stats</h4>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value">12</span>
+                                        <span class="stat-label">Tasks completed</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value">8</span>
+                                        <span class="stat-label">Notes created</span>
+                                    </div>
+                                </div>
+                                <div class="preview-card card-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-lightbulb"></i>
+                                        <h4>Quick Note</h4>
+                                    </div>
+                                    <p class="note-preview">Project brainstorm ideas...</p>
+                                    <button class="note-btn">+ Add Note</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Canvas Tab -->
+                        <div class="tab-content" id="canvas-tab">
+                            <div class="canvas-header">
+                                <h3><i class="fas fa-paint-brush"></i> Digital Canvas</h3>
+                                <div class="canvas-tools">
+                                    <button class="canvas-tool active"><i class="fas fa-pen"></i></button>
+                                    <button class="canvas-tool"><i class="fas fa-eraser"></i></button>
+                                    <button class="canvas-tool"><i class="fas fa-shapes"></i></button>
+                                </div>
+                            </div>
+                            <div class="canvas-area">
+                                <div class="canvas-grid"></div>
+                                <div class="canvas-drawing">
+                                    <div class="drawing-item shape-1"></div>
+                                    <div class="drawing-item shape-2"></div>
+                                    <div class="drawing-item shape-3"></div>
+                                    <div class="drawing-text">Brainstorm → Wireframe → Prototype</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notes Tab -->
+                        <div class="tab-content" id="notes-tab">
+                            <div class="notes-header">
+                                <h3><i class="fas fa-sticky-note"></i> Smart Notes</h3>
+                                <button class="new-note-btn">+ New Note</button>
+                            </div>
+                            <div class="notes-list">
+                                <div class="note-item">
+                                    <div class="note-title">Project Requirements</div>
+                                    <div class="note-preview">Initial requirements gathering completed. Need to finalize...</div>
+                                    <div class="note-tags">
+                                        <span class="tag">work</span>
+                                        <span class="tag">urgent</span>
+                                    </div>
+                                </div>
+                                <div class="note-item">
+                                    <div class="note-title">Meeting Notes</div>
+                                    <div class="note-preview">Key decisions from today's design review...</div>
+                                    <div class="note-tags">
+                                        <span class="tag">meeting</span>
+                                    </div>
+                                </div>
+                                <div class="note-item">
+                                    <div class="note-title">Ideas & Inspiration</div>
+                                    <div class="note-preview">UI patterns to explore for the dashboard...</div>
+                                    <div class="note-tags">
+                                        <span class="tag">ideas</span>
+                                        <span class="tag">design</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tasks Tab -->
+                        <div class="tab-content" id="tasks-tab">
+                            <div class="tasks-header">
+                                <h3><i class="fas fa-tasks"></i> Task Management</h3>
+                                <div class="task-filters">
+                                    <button class="filter-btn active">All</button>
+                                    <button class="filter-btn">Today</button>
+                                    <button class="filter-btn">High</button>
+                                </div>
+                            </div>
+                            <div class="tasks-list">
+                                <div class="task-item">
+                                    <div class="task-checkbox">
+                                        <input type="checkbox" id="task1">
+                                        <label for="task1"></label>
+                                    </div>
+                                    <div class="task-details">
+                                        <div class="task-title">Complete project proposal</div>
+                                        <div class="task-meta">
+                                            <span class="task-priority high">High</span>
+                                            <span class="task-due">Today 18:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="task-item">
+                                    <div class="task-checkbox">
+                                        <input type="checkbox" id="task2" checked>
+                                        <label for="task2"></label>
+                                    </div>
+                                    <div class="task-details">
+                                        <div class="task-title">Design review meeting</div>
+                                        <div class="task-meta">
+                                            <span class="task-priority medium">Medium</span>
+                                            <span class="task-due">Completed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="task-item">
+                                    <div class="task-checkbox">
+                                        <input type="checkbox" id="task3">
+                                        <label for="task3"></label>
+                                    </div>
+                                    <div class="task-details">
+                                        <div class="task-title">Update documentation</div>
+                                        <div class="task-meta">
+                                            <span class="task-priority low">Low</span>
+                                            <span class="task-due">Tomorrow</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add-task">
+                                <input type="text" placeholder="Add a new task...">
+                                <button><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                        
+                        <!-- Calendar Tab -->
+                        <div class="tab-content" id="calendar-tab">
+                            <div class="calendar-header">
+                                <h3><i class="fas fa-calendar-alt"></i> Calendar</h3>
+                                <div class="calendar-nav">
+                                    <button><i class="fas fa-chevron-left"></i></button>
+                                    <span class="current-month">February 2024</span>
+                                    <button><i class="fas fa-chevron-right"></i></button>
+                                </div>
+                            </div>
+                            <div class="calendar-grid">
+                                <div class="calendar-weekdays">
+                                    <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+                                </div>
+                                <div class="calendar-days">
+                                    <!-- Calendar days will be populated by JS -->
+                                </div>
+                            </div>
+                            <div class="calendar-events">
+                                <div class="event-item">
+                                    <div class="event-time">14:30</div>
+                                    <div class="event-details">
+                                        <div class="event-title">Team Meeting</div>
+                                        <div class="event-location">Conference Room A</div>
+                                    </div>
+                                </div>
+                                <div class="event-item">
+                                    <div class="event-time">16:00</div>
+                                    <div class="event-details">
+                                        <div class="event-title">Client Presentation</div>
+                                        <div class="event-location">Online</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -149,167 +357,6 @@
         </div>
     </section>
 
-    <!-- Reviews Section -->
-    <section id="reviews" class="reviews">
-        <div class="container">
-            <h2 class="section-title">What users are saying</h2>
-            <p class="section-subtitle">Join thousands of productive people</p>
-            
-            <div class="reviews-container">
-                <div class="review-stats">
-                    <div class="average-rating">
-                        <div class="rating-number">4.8</div>
-                        <div class="rating-stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                        <div class="rating-count">Based on 1,247 reviews</div>
-                    </div>
-                    
-                    <div class="rating-bars">
-                        <div class="rating-bar">
-                            <span>5 stars</span>
-                            <div class="bar">
-                                <div class="fill" style="width: 75%"></div>
-                            </div>
-                            <span>75%</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span>4 stars</span>
-                            <div class="bar">
-                                <div class="fill" style="width: 18%"></div>
-                            </div>
-                            <span>18%</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span>3 stars</span>
-                            <div class="bar">
-                                <div class="fill" style="width: 5%"></div>
-                            </div>
-                            <span>5%</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span>2 stars</span>
-                            <div class="bar">
-                                <div class="fill" style="width: 1%"></div>
-                            </div>
-                            <span>1%</span>
-                        </div>
-                        <div class="rating-bar">
-                            <span>1 star</span>
-                            <div class="bar">
-                                <div class="fill" style="width: 1%"></div>
-                            </div>
-                            <span>1%</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="reviews-list">
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="reviewer">
-                                <div class="reviewer-avatar">JD</div>
-                                <div class="reviewer-info">
-                                    <div class="reviewer-name">Jane Doe</div>
-                                    <div class="review-date">2 days ago</div>
-                                </div>
-                            </div>
-                            <div class="review-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                        <div class="review-content">
-                            "Finally an app that doesn't overwhelm me with features I don't need. The minimalist design helps me focus."
-                        </div>
-                    </div>
-                    
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="reviewer">
-                                <div class="reviewer-avatar">AS</div>
-                                <div class="reviewer-info">
-                                    <div class="reviewer-name">Alex Smith</div>
-                                    <div class="review-date">1 week ago</div>
-                                </div>
-                            </div>
-                            <div class="review-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                            </div>
-                        </div>
-                        <div class="review-content">
-                            "The canvas feature is perfect for brainstorming. I use it daily for project planning."
-                        </div>
-                    </div>
-                    
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="reviewer">
-                                <div class="reviewer-avatar">MJ</div>
-                                <div class="reviewer-info">
-                                    <div class="reviewer-name">Maria Johnson</div>
-                                    <div class="review-date">3 weeks ago</div>
-                                </div>
-                            </div>
-                            <div class="review-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                        </div>
-                        <div class="review-content">
-                            "Switched from 3 different apps to Tufn. Having everything in one place saves me hours every week."
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Add Review Form -->
-            <div class="add-review">
-                <h3>Share your experience</h3>
-                <form id="review-form">
-                    <div class="form-group">
-                        <label for="reviewer-name">Name</label>
-                        <input type="text" id="reviewer-name" name="name" required minlength="2" maxlength="50">
-                    </div>
-                    <div class="form-group">
-                        <label for="reviewer-email">Email (optional)</label>
-                        <input type="email" id="reviewer-email" name="email">
-                    </div>
-                    <div class="form-group">
-                        <label>Rating</label>
-                        <div class="star-rating">
-                            <i class="far fa-star" data-rating="1"></i>
-                            <i class="far fa-star" data-rating="2"></i>
-                            <i class="far fa-star" data-rating="3"></i>
-                            <i class="far fa-star" data-rating="4"></i>
-                            <i class="far fa-star" data-rating="5"></i>
-                            <input type="hidden" id="rating-value" name="rating" value="5" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="review-content">Your Review</label>
-                        <textarea id="review-content" name="content" required minlength="10" maxlength="500"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit Review</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
     <!-- Download Section -->
     <section id="download" class="download">
         <div class="container">
@@ -323,7 +370,9 @@
                     </div>
                     <h3>Windows</h3>
                     <p>Windows 10/11 64-bit</p>
-                    <a href="/download/tufn-windows.exe" class="btn btn-primary">Download (.exe)</a>
+                    <button class="btn btn-primary download-btn" data-os="windows">
+                        <i class="fab fa-windows"></i> Download (.exe)
+                    </button>
                     <div class="download-size">~85 MB</div>
                 </div>
                 
@@ -333,7 +382,9 @@
                     </div>
                     <h3>macOS</h3>
                     <p>macOS 11.0 or later</p>
-                    <a href="/download/tufn-macos.dmg" class="btn btn-primary">Download (.dmg)</a>
+                    <button class="btn btn-primary download-btn" data-os="macos">
+                        <i class="fab fa-apple"></i> Download (.dmg)
+                    </button>
                     <div class="download-size">~90 MB</div>
                 </div>
                 
@@ -343,7 +394,9 @@
                     </div>
                     <h3>Linux</h3>
                     <p>Debian/Ubuntu 64-bit</p>
-                    <a href="/download/tufn-linux.deb" class="btn btn-primary">Download (.deb)</a>
+                    <button class="btn btn-primary download-btn" data-os="linux">
+                        <i class="fab fa-linux"></i> Download (.deb)
+                    </button>
                     <div class="download-size">~80 MB</div>
                 </div>
             </div>
@@ -372,62 +425,34 @@
         </div>
     </section>
 
-    <!-- Contact/Feedback Section -->
+    <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
-            <h2 class="section-title">We'd love to hear from you</h2>
-            <p class="section-subtitle">Feedback, questions, or just want to say hi?</p>
+            <h2 class="section-title">Get in touch</h2>
+            <p class="section-subtitle">Have questions or feedback? We'd love to hear from you</p>
             
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h4>Email</h4>
-                            <p>support@tufn.app</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-globe"></i>
-                        <div>
-                            <h4>Website</h4>
-                            <p>tufn.app</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fab fa-github"></i>
-                        <div>
-                            <h4>GitHub</h4>
-                            <p>github.com/tufn</p>
-                        </div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h4>Email</h4>
+                        <p>support@tufn.app</p>
                     </div>
                 </div>
-                
-                <form id="feedback-form" class="feedback-form">
-                    <div class="form-group">
-                        <label for="feedback-name">Name</label>
-                        <input type="text" id="feedback-name" name="name" required minlength="2" maxlength="100">
+                <div class="contact-item">
+                    <i class="fab fa-github"></i>
+                    <div>
+                        <h4>GitHub</h4>
+                        <p>github.com/tufn</p>
                     </div>
-                    <div class="form-group">
-                        <label for="feedback-email">Email</label>
-                        <input type="email" id="feedback-email" name="email" required>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-globe"></i>
+                    <div>
+                        <h4>Website</h4>
+                        <p>tufn.app</p>
                     </div>
-                    <div class="form-group">
-                        <label for="feedback-type">Type</label>
-                        <select id="feedback-type" name="type" required>
-                            <option value="">Select type</option>
-                            <option value="bug">Bug Report</option>
-                            <option value="feature">Feature Request</option>
-                            <option value="general">General Feedback</option>
-                            <option value="question">Question</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="feedback-message">Message</label>
-                        <textarea id="feedback-message" name="message" required minlength="10" maxlength="1000"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </form>
+                </div>
             </div>
         </div>
     </section>
@@ -445,7 +470,6 @@
                         <h4>Product</h4>
                         <a href="#features">Features</a>
                         <a href="#download">Download</a>
-                        <a href="#reviews">Reviews</a>
                     </div>
                     <div class="footer-column">
                         <h4>Support</h4>
@@ -457,7 +481,6 @@
                         <h4>Legal</h4>
                         <a href="#">Privacy Policy</a>
                         <a href="#">Terms of Service</a>
-                        <a href="#">License</a>
                     </div>
                 </div>
             </div>
@@ -472,18 +495,28 @@
         </div>
     </footer>
 
-    <!-- Success Modal -->
-    <div id="success-modal" class="modal">
+    <!-- Download Modal -->
+    <div id="download-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Thank you!</h3>
+                <h3>Download Tufn</h3>
                 <button class="modal-close">&times;</button>
             </div>
             <div class="modal-body">
-                <p id="success-message">Your submission has been received successfully.</p>
+                <div class="download-instructions">
+                    <p id="download-message">Your download will begin shortly. If it doesn't, <a href="#" id="manual-download-link">click here</a>.</p>
+                    <div class="install-steps">
+                        <h4>Installation Instructions:</h4>
+                        <ol>
+                            <li id="step1">Run the downloaded installer</li>
+                            <li id="step2">Follow the setup wizard</li>
+                            <li id="step3">Launch Tufn from your applications</li>
+                        </ol>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary modal-close-btn">OK</button>
+                <button class="btn btn-primary modal-close-btn">Close</button>
             </div>
         </div>
     </div>
