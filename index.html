@@ -9,12 +9,10 @@
     <meta name="description" content="Tufn - A minimalist, elegant productivity app for notes, tasks, canvas, and calendar">
 </head>
 <body>
-    <!-- Theme Toggle -->
     <button id="theme-toggle" class="theme-toggle">
         <i class="fas fa-moon"></i>
     </button>
 
-    <!-- Header/Navigation -->
     <header class="header">
         <nav class="nav container">
             <div class="nav-logo">
@@ -22,7 +20,7 @@
             </div>
             <div class="nav-links">
                 <a href="#features">Features</a>
-                <a href="#download">Download</a>
+                <a href="development.html">Development</a>
                 <a href="#contact">Contact</a>
             </div>
             <button class="mobile-menu-btn">
@@ -31,41 +29,36 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="container">
             <div class="hero-content">
                 <h1 class="hero-title">minimalist productivity,<br>maximal focus</h1>
                 <p class="hero-subtitle">An all-in-one app for notes, tasks, canvas, and calendar in one elegant interface.</p>
                 <div class="hero-buttons">
-                    <a href="#download" class="btn btn-primary">
-                        <i class="fab fa-windows"></i> Download for Windows
+                    <a href="development.html" class="btn btn-primary">
+                        <i class="fas fa-code"></i> View Development Status
                     </a>
-                    <a href="#download" class="btn btn-secondary">
-                        <i class="fab fa-apple"></i> Download for Mac
-                    </a>
-                    <a href="#download" class="btn btn-outline">
-                        <i class="fab fa-linux"></i> Linux (.deb)
+                    <a href="development.html" class="btn btn-secondary">
+                        <i class="fas fa-paper-plane"></i> Join Waitlist
                     </a>
                 </div>
                 <div class="hero-stats">
                     <div class="stat">
-                        <span class="stat-number">10,000+</span>
-                        <span class="stat-label">Active Users</span>
+                        <span class="stat-number">1,000+</span>
+                        <span class="stat-label">Waitlist Signups</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-number">4.8</span>
-                        <span class="stat-label">Avg Rating</span>
+                        <span class="stat-number">65%</span>
+                        <span class="stat-label">Development Progress</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-number">50+</span>
-                        <span class="stat-label">Countries</span>
+                        <span class="stat-number">Q2 2024</span>
+                        <span class="stat-label">Estimated Launch</span>
                     </div>
                 </div>
             </div>
             <div class="hero-preview">
                 <div class="app-preview">
-                    <!-- App Tabs -->
                     <div class="app-tabs">
                         <button class="app-tab active" data-tab="dashboard">
                             <i class="fas fa-chart-pie"></i> Dashboard
@@ -84,9 +77,7 @@
                         </button>
                     </div>
                     
-                    <!-- App Content -->
                     <div class="app-content">
-                        <!-- Dashboard Tab -->
                         <div class="tab-content active" id="dashboard-tab">
                             <div class="time-display" id="current-time">14:30</div>
                             <div class="dashboard-grid">
@@ -147,7 +138,6 @@
                             </div>
                         </div>
                         
-                        <!-- Canvas Tab -->
                         <div class="tab-content" id="canvas-tab">
                             <div class="canvas-header">
                                 <h3><i class="fas fa-paint-brush"></i> Digital Canvas</h3>
@@ -168,7 +158,6 @@
                             </div>
                         </div>
                         
-                        <!-- Notes Tab -->
                         <div class="tab-content" id="notes-tab">
                             <div class="notes-header">
                                 <h3><i class="fas fa-sticky-note"></i> Smart Notes</h3>
@@ -201,7 +190,6 @@
                             </div>
                         </div>
                         
-                        <!-- Tasks Tab -->
                         <div class="tab-content" id="tasks-tab">
                             <div class="tasks-header">
                                 <h3><i class="fas fa-tasks"></i> Task Management</h3>
@@ -258,7 +246,6 @@
                             </div>
                         </div>
                         
-                        <!-- Calendar Tab -->
                         <div class="tab-content" id="calendar-tab">
                             <div class="calendar-header">
                                 <h3><i class="fas fa-calendar-alt"></i> Calendar</h3>
@@ -272,9 +259,7 @@
                                 <div class="calendar-weekdays">
                                     <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
                                 </div>
-                                <div class="calendar-days">
-                                    <!-- Calendar days will be populated by JS -->
-                                </div>
+                                <div class="calendar-days"></div>
                             </div>
                             <div class="calendar-events">
                                 <div class="event-item">
@@ -299,7 +284,6 @@
         </div>
     </section>
 
-    <!-- Features Section -->
     <section id="features" class="features">
         <div class="container">
             <h2 class="section-title">Everything you need, nothing you don't</h2>
@@ -357,75 +341,6 @@
         </div>
     </section>
 
-    <!-- Download Section -->
-    <section id="download" class="download">
-        <div class="container">
-            <h2 class="section-title">Get Tufn now</h2>
-            <p class="section-subtitle">Available for all major platforms</p>
-            
-            <div class="download-options">
-                <div class="download-card">
-                    <div class="download-icon">
-                        <i class="fab fa-windows"></i>
-                    </div>
-                    <h3>Windows</h3>
-                    <p>Windows 10/11 64-bit</p>
-                    <button class="btn btn-primary download-btn" data-os="windows">
-                        <i class="fab fa-windows"></i> Download (.exe)
-                    </button>
-                    <div class="download-size">~85 MB</div>
-                </div>
-                
-                <div class="download-card">
-                    <div class="download-icon">
-                        <i class="fab fa-apple"></i>
-                    </div>
-                    <h3>macOS</h3>
-                    <p>macOS 11.0 or later</p>
-                    <button class="btn btn-primary download-btn" data-os="macos">
-                        <i class="fab fa-apple"></i> Download (.dmg)
-                    </button>
-                    <div class="download-size">~90 MB</div>
-                </div>
-                
-                <div class="download-card">
-                    <div class="download-icon">
-                        <i class="fab fa-linux"></i>
-                    </div>
-                    <h3>Linux</h3>
-                    <p>Debian/Ubuntu 64-bit</p>
-                    <button class="btn btn-primary download-btn" data-os="linux">
-                        <i class="fab fa-linux"></i> Download (.deb)
-                    </button>
-                    <div class="download-size">~80 MB</div>
-                </div>
-            </div>
-            
-            <div class="system-requirements">
-                <h3>System Requirements</h3>
-                <div class="requirements-grid">
-                    <div class="requirement">
-                        <i class="fas fa-microchip"></i>
-                        <span>Processor: 1.5 GHz or faster</span>
-                    </div>
-                    <div class="requirement">
-                        <i class="fas fa-memory"></i>
-                        <span>RAM: 4 GB minimum</span>
-                    </div>
-                    <div class="requirement">
-                        <i class="fas fa-hdd"></i>
-                        <span>Storage: 200 MB free space</span>
-                    </div>
-                    <div class="requirement">
-                        <i class="fas fa-desktop"></i>
-                        <span>Display: 1280x720 minimum</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
             <h2 class="section-title">Get in touch</h2>
@@ -436,7 +351,7 @@
                     <i class="fas fa-envelope"></i>
                     <div>
                         <h4>Email</h4>
-                        <p>support@tufn.app</p>
+                        <p>tufn-off@proton.me</p>
                     </div>
                 </div>
                 <div class="contact-item">
@@ -450,14 +365,13 @@
                     <i class="fas fa-globe"></i>
                     <div>
                         <h4>Website</h4>
-                        <p>tufn.app</p>
+                        <p>http://tufn.duckdns.org/</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -469,13 +383,12 @@
                     <div class="footer-column">
                         <h4>Product</h4>
                         <a href="#features">Features</a>
-                        <a href="#download">Download</a>
+                        <a href="development.html">Development</a>
                     </div>
                     <div class="footer-column">
-                        <h4>Support</h4>
+                        <h4>Connect</h4>
                         <a href="#contact">Contact</a>
-                        <a href="#">Documentation</a>
-                        <a href="#">FAQ</a>
+                        <a href="https://github.com/tufn">GitHub</a>
                     </div>
                     <div class="footer-column">
                         <h4>Legal</h4>
@@ -485,41 +398,15 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2023 Tufn. All rights reserved.</p>
+                <p>&copy; 2026 Tufn. All rights reserved.</p>
                 <div class="social-links">
                     <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="https://github.com/tufn"><i class="fab fa-github"></i></a>
                     <a href="#"><i class="fab fa-discord"></i></a>
                 </div>
             </div>
         </div>
     </footer>
-
-    <!-- Download Modal -->
-    <div id="download-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Download Tufn</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="download-instructions">
-                    <p id="download-message">Your download will begin shortly. If it doesn't, <a href="#" id="manual-download-link">click here</a>.</p>
-                    <div class="install-steps">
-                        <h4>Installation Instructions:</h4>
-                        <ol>
-                            <li id="step1">Run the downloaded installer</li>
-                            <li id="step2">Follow the setup wizard</li>
-                            <li id="step3">Launch Tufn from your applications</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary modal-close-btn">Close</button>
-            </div>
-        </div>
-    </div>
 
     <script src="script.js"></script>
 </body>
