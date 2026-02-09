@@ -3,20 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tufn - Minimalist Productivity App</title>
+    <title>Tufn: Minimalist Productivity App for Notes, Tasks, Canvas & Calendar | All-in-One Software</title>
+    <meta name="description" content="Tufn is the ultimate minimalist productivity app. Combine smart notes, task management, digital canvas, and calendar in one elegant, focused interface. Join waitlist for 2027 launch.">
+    <meta name="keywords" content="productivity app, task manager, note-taking app, digital canvas, calendar software, minimalist design, focus app, Tufn, productivity software, all-in-one app, project management, brainstorming tool, markdown notes, cloud sync, time management">
+    <meta name="author" content="Tufn">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://tufn.github.io/">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tufn.github.io/">
+    <meta property="og:title" content="Tufn: Minimalist Productivity App for Notes, Tasks, Canvas & Calendar">
+    <meta property="og:description" content="All-in-one minimalist productivity software. Join waitlist for 2027 launch.">
+    <meta property="og:image" content="https://tufn.github.io/images/tufn-preview.png">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://tufn.github.io/">
+    <meta property="twitter:title" content="Tufn: Minimalist Productivity App">
+    <meta property="twitter:description" content="Notes, tasks, canvas & calendar in one elegant interface.">
+    <meta property="twitter:image" content="https://tufn.github.io/images/tufn-preview.png">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Tufn",
+        "applicationCategory": "ProductivityApplication",
+        "operatingSystem": "Web, iOS, Android",
+        "description": "Minimalist all-in-one productivity app for notes, tasks, canvas, and calendar",
+        "url": "https://tufn.github.io/",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": "Smart Notes, Task Management, Digital Canvas, Calendar Integration, Cloud Sync, Focus Mode",
+        "softwareVersion": "1.0",
+        "releaseNotes": "Launching 2027",
+        "author": {
+            "@type": "Organization",
+            "name": "Tufn"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "1000"
+        }
+    }
+    </script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <meta name="description" content="Tufn - A minimalist, elegant productivity app for notes, tasks, canvas, and calendar">
 </head>
 <body>
     <button id="theme-toggle" class="theme-toggle">
         <i class="fas fa-moon"></i>
     </button>
-
     <header class="header">
         <nav class="nav container">
             <div class="nav-logo">
                 <span class="logo">tufn</span>
+                <span class="logo-sr">- Minimalist Productivity Software</span>
             </div>
             <div class="nav-links">
                 <a href="#features">Features</a>
@@ -28,252 +70,248 @@
             </button>
         </nav>
     </header>
-
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">minimalist productivity,<br>maximal focus</h1>
-                <p class="hero-subtitle">An all-in-one app for notes, tasks, canvas, and calendar in one elegant interface.</p>
-                <div class="hero-buttons">
-                    <a href="development.html" class="btn btn-primary">
-                        <i class="fas fa-code"></i> View Development Status
-                    </a>
-                    <a href="development.html" class="btn btn-secondary">
-                        <i class="fas fa-paper-plane"></i> Join Waitlist
-                    </a>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">minimalist productivity,<br>maximal focus</h1>
+                    <p class="hero-subtitle">An all-in-one app for notes, tasks, canvas, and calendar in one elegant interface.</p>
+                    <div class="hero-buttons">
+                        <a href="development.html" class="btn btn-primary">
+                            <i class="fas fa-code"></i> View Development Status
+                        </a>
+                        <a href="development.html" class="btn btn-secondary">
+                            <i class="fas fa-paper-plane"></i> Join Waitlist
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">1+</span>
+                            <span class="stat-label">Waitlist Signups</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">63%</span>
+                            <span class="stat-label">Development Progress</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">2027</span>
+                            <span class="stat-label">Estimated Launch</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <span class="stat-number">1+</span>
-                        <span class="stat-label">Waitlist Signups</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">63%</span>
-                        <span class="stat-label">Development Progress</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">2027</span>
-                        <span class="stat-label">Estimated Launch</span>
-                    </div>
-                </div>
-            </div>
-            <div class="hero-preview">
-                <div class="app-preview">
-                    <div class="app-tabs">
-                        <button class="app-tab active" data-tab="dashboard">
-                            <i class="fas fa-chart-pie"></i> Dashboard
-                        </button>
-                        <button class="app-tab" data-tab="canvas">
-                            <i class="fas fa-paint-brush"></i> Canvas
-                        </button>
-                        <button class="app-tab" data-tab="notes">
-                            <i class="fas fa-sticky-note"></i> Notes
-                        </button>
-                        <button class="app-tab" data-tab="tasks">
-                            <i class="fas fa-tasks"></i> Tasks
-                        </button>
-                        <button class="app-tab" data-tab="calendar">
-                            <i class="fas fa-calendar-alt"></i> Calendar
-                        </button>
-                    </div>
-                    
-                    <div class="app-content">
-                        <div class="tab-content active" id="dashboard-tab">
-                            <div class="time-display" id="current-time">14:30</div>
-                            <div class="dashboard-grid">
-                                <div class="preview-card card-1">
-                                    <div class="card-header">
-                                        <i class="fas fa-tasks"></i>
-                                        <h4>Today's Tasks</h4>
+                <div class="hero-preview">
+                    <div class="app-preview">
+                        <div class="app-tabs">
+                            <button class="app-tab active" data-tab="dashboard">
+                                <i class="fas fa-chart-pie"></i> Dashboard
+                            </button>
+                            <button class="app-tab" data-tab="canvas">
+                                <i class="fas fa-paint-brush"></i> Canvas
+                            </button>
+                            <button class="app-tab" data-tab="notes">
+                                <i class="fas fa-sticky-note"></i> Notes
+                            </button>
+                            <button class="app-tab" data-tab="tasks">
+                                <i class="fas fa-tasks"></i> Tasks
+                            </button>
+                            <button class="app-tab" data-tab="calendar">
+                                <i class="fas fa-calendar-alt"></i> Calendar
+                            </button>
+                        </div>
+                        <div class="app-content">
+                            <div class="tab-content active" id="dashboard-tab">
+                                <div class="time-display" id="current-time">14:30</div>
+                                <div class="dashboard-grid">
+                                    <div class="preview-card card-1">
+                                        <div class="card-header">
+                                            <i class="fas fa-tasks"></i>
+                                            <h4>Today's Tasks</h4>
+                                        </div>
+                                        <div class="task-item completed">
+                                            <span class="task-check"><i class="fas fa-check"></i></span>
+                                            <span class="task-text">Design review meeting</span>
+                                        </div>
+                                        <div class="task-item">
+                                            <span class="task-check"></span>
+                                            <span class="task-text">Finish project proposal</span>
+                                        </div>
+                                        <div class="task-item">
+                                            <span class="task-check"></span>
+                                            <span class="task-text">Email team updates</span>
+                                        </div>
                                     </div>
-                                    <div class="task-item completed">
-                                        <span class="task-check"><i class="fas fa-check"></i></span>
-                                        <span class="task-text">Design review meeting</span>
+                                    <div class="preview-card card-2">
+                                        <div class="card-header">
+                                            <i class="fas fa-calendar-day"></i>
+                                            <h4>Upcoming Events</h4>
+                                        </div>
+                                        <div class="event-item">
+                                            <span class="event-time">15:00</span>
+                                            <span class="event-text">Team Sync</span>
+                                        </div>
+                                        <div class="event-item">
+                                            <span class="event-time">17:30</span>
+                                            <span class="event-text">Client Call</span>
+                                        </div>
+                                    </div>
+                                    <div class="preview-card card-3">
+                                        <div class="card-header">
+                                            <i class="fas fa-bullseye"></i>
+                                            <h4>Quick Stats</h4>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-value">12</span>
+                                            <span class="stat-label">Tasks completed</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-value">8</span>
+                                            <span class="stat-label">Notes created</span>
+                                        </div>
+                                    </div>
+                                    <div class="preview-card card-4">
+                                        <div class="card-header">
+                                            <i class="fas fa-lightbulb"></i>
+                                            <h4>Quick Note</h4>
+                                        </div>
+                                        <p class="note-preview">Project brainstorm ideas...</p>
+                                        <button class="note-btn">+ Add Note</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-content" id="canvas-tab">
+                                <div class="canvas-header">
+                                    <h3><i class="fas fa-paint-brush"></i> Digital Canvas</h3>
+                                    <div class="canvas-tools">
+                                        <button class="canvas-tool active"><i class="fas fa-pen"></i></button>
+                                        <button class="canvas-tool"><i class="fas fa-eraser"></i></button>
+                                        <button class="canvas-tool"><i class="fas fa-shapes"></i></button>
+                                    </div>
+                                </div>
+                                <div class="canvas-area">
+                                    <div class="canvas-grid"></div>
+                                    <div class="canvas-drawing">
+                                        <div class="drawing-item shape-1"></div>
+                                        <div class="drawing-item shape-2"></div>
+                                        <div class="drawing-item shape-3"></div>
+                                        <div class="drawing-text">Brainstorm → Wireframe → Prototype</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-content" id="notes-tab">
+                                <div class="notes-header">
+                                    <h3><i class="fas fa-sticky-note"></i> Smart Notes</h3>
+                                    <button class="new-note-btn">+ New Note</button>
+                                </div>
+                                <div class="notes-list">
+                                    <div class="note-item">
+                                        <div class="note-title">Project Requirements</div>
+                                        <div class="note-preview">Initial requirements gathering completed. Need to finalize...</div>
+                                        <div class="note-tags">
+                                            <span class="tag">work</span>
+                                            <span class="tag">urgent</span>
+                                        </div>
+                                    </div>
+                                    <div class="note-item">
+                                        <div class="note-title">Meeting Notes</div>
+                                        <div class="note-preview">Key decisions from today's design review...</div>
+                                        <div class="note-tags">
+                                            <span class="tag">meeting</span>
+                                        </div>
+                                    </div>
+                                    <div class="note-item">
+                                        <div class="note-title">Ideas & Inspiration</div>
+                                        <div class="note-preview">UI patterns to explore for the dashboard...</div>
+                                        <div class="note-tags">
+                                            <span class="tag">ideas</span>
+                                            <span class="tag">design</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-content" id="tasks-tab">
+                                <div class="tasks-header">
+                                    <h3><i class="fas fa-tasks"></i> Task Management</h3>
+                                    <div class="task-filters">
+                                        <button class="filter-btn active">All</button>
+                                        <button class="filter-btn">Today</button>
+                                        <button class="filter-btn">High</button>
+                                    </div>
+                                </div>
+                                <div class="tasks-list">
+                                    <div class="task-item">
+                                        <div class="task-checkbox">
+                                            <input type="checkbox" id="task1">
+                                            <label for="task1"></label>
+                                        </div>
+                                        <div class="task-details">
+                                            <div class="task-title">Complete project proposal</div>
+                                            <div class="task-meta">
+                                                <span class="task-priority high">High</span>
+                                                <span class="task-due">Today 18:00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="task-item">
-                                        <span class="task-check"></span>
-                                        <span class="task-text">Finish project proposal</span>
+                                        <div class="task-checkbox">
+                                            <input type="checkbox" id="task2" checked>
+                                            <label for="task2"></label>
+                                        </div>
+                                        <div class="task-details">
+                                            <div class="task-title">Design review meeting</div>
+                                            <div class="task-meta">
+                                                <span class="task-priority medium">Medium</span>
+                                                <span class="task-due">Completed</span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="task-item">
-                                        <span class="task-check"></span>
-                                        <span class="task-text">Email team updates</span>
+                                        <div class="task-checkbox">
+                                            <input type="checkbox" id="task3">
+                                            <label for="task3"></label>
+                                        </div>
+                                        <div class="task-details">
+                                            <div class="task-title">Update documentation</div>
+                                            <div class="task-meta">
+                                                <span class="task-priority low">Low</span>
+                                                <span class="task-due">Tomorrow</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="preview-card card-2">
-                                    <div class="card-header">
-                                        <i class="fas fa-calendar-day"></i>
-                                        <h4>Upcoming Events</h4>
+                                <div class="add-task">
+                                    <input type="text" placeholder="Add a new task...">
+                                    <button><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="tab-content" id="calendar-tab">
+                                <div class="calendar-header">
+                                    <h3><i class="fas fa-calendar-alt"></i> Calendar</h3>
+                                    <div class="calendar-nav">
+                                        <button><i class="fas fa-chevron-left"></i></button>
+                                        <span class="current-month">February 2024</span>
+                                        <button><i class="fas fa-chevron-right"></i></button>
+                                    </div>
+                                </div>
+                                <div class="calendar-grid">
+                                    <div class="calendar-weekdays">
+                                        <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+                                    </div>
+                                    <div class="calendar-days"></div>
+                                </div>
+                                <div class="calendar-events">
+                                    <div class="event-item">
+                                        <div class="event-time">14:30</div>
+                                        <div class="event-details">
+                                            <div class="event-title">Team Meeting</div>
+                                            <div class="event-location">Conference Room A</div>
+                                        </div>
                                     </div>
                                     <div class="event-item">
-                                        <span class="event-time">15:00</span>
-                                        <span class="event-text">Team Sync</span>
-                                    </div>
-                                    <div class="event-item">
-                                        <span class="event-time">17:30</span>
-                                        <span class="event-text">Client Call</span>
-                                    </div>
-                                </div>
-                                <div class="preview-card card-3">
-                                    <div class="card-header">
-                                        <i class="fas fa-bullseye"></i>
-                                        <h4>Quick Stats</h4>
-                                    </div>
-                                    <div class="stat-item">
-                                        <span class="stat-value">12</span>
-                                        <span class="stat-label">Tasks completed</span>
-                                    </div>
-                                    <div class="stat-item">
-                                        <span class="stat-value">8</span>
-                                        <span class="stat-label">Notes created</span>
-                                    </div>
-                                </div>
-                                <div class="preview-card card-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-lightbulb"></i>
-                                        <h4>Quick Note</h4>
-                                    </div>
-                                    <p class="note-preview">Project brainstorm ideas...</p>
-                                    <button class="note-btn">+ Add Note</button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="tab-content" id="canvas-tab">
-                            <div class="canvas-header">
-                                <h3><i class="fas fa-paint-brush"></i> Digital Canvas</h3>
-                                <div class="canvas-tools">
-                                    <button class="canvas-tool active"><i class="fas fa-pen"></i></button>
-                                    <button class="canvas-tool"><i class="fas fa-eraser"></i></button>
-                                    <button class="canvas-tool"><i class="fas fa-shapes"></i></button>
-                                </div>
-                            </div>
-                            <div class="canvas-area">
-                                <div class="canvas-grid"></div>
-                                <div class="canvas-drawing">
-                                    <div class="drawing-item shape-1"></div>
-                                    <div class="drawing-item shape-2"></div>
-                                    <div class="drawing-item shape-3"></div>
-                                    <div class="drawing-text">Brainstorm → Wireframe → Prototype</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="tab-content" id="notes-tab">
-                            <div class="notes-header">
-                                <h3><i class="fas fa-sticky-note"></i> Smart Notes</h3>
-                                <button class="new-note-btn">+ New Note</button>
-                            </div>
-                            <div class="notes-list">
-                                <div class="note-item">
-                                    <div class="note-title">Project Requirements</div>
-                                    <div class="note-preview">Initial requirements gathering completed. Need to finalize...</div>
-                                    <div class="note-tags">
-                                        <span class="tag">work</span>
-                                        <span class="tag">urgent</span>
-                                    </div>
-                                </div>
-                                <div class="note-item">
-                                    <div class="note-title">Meeting Notes</div>
-                                    <div class="note-preview">Key decisions from today's design review...</div>
-                                    <div class="note-tags">
-                                        <span class="tag">meeting</span>
-                                    </div>
-                                </div>
-                                <div class="note-item">
-                                    <div class="note-title">Ideas & Inspiration</div>
-                                    <div class="note-preview">UI patterns to explore for the dashboard...</div>
-                                    <div class="note-tags">
-                                        <span class="tag">ideas</span>
-                                        <span class="tag">design</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="tab-content" id="tasks-tab">
-                            <div class="tasks-header">
-                                <h3><i class="fas fa-tasks"></i> Task Management</h3>
-                                <div class="task-filters">
-                                    <button class="filter-btn active">All</button>
-                                    <button class="filter-btn">Today</button>
-                                    <button class="filter-btn">High</button>
-                                </div>
-                            </div>
-                            <div class="tasks-list">
-                                <div class="task-item">
-                                    <div class="task-checkbox">
-                                        <input type="checkbox" id="task1">
-                                        <label for="task1"></label>
-                                    </div>
-                                    <div class="task-details">
-                                        <div class="task-title">Complete project proposal</div>
-                                        <div class="task-meta">
-                                            <span class="task-priority high">High</span>
-                                            <span class="task-due">Today 18:00</span>
+                                        <div class="event-time">16:00</div>
+                                        <div class="event-details">
+                                            <div class="event-title">Client Presentation</div>
+                                            <div class="event-location">Online</div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="task-item">
-                                    <div class="task-checkbox">
-                                        <input type="checkbox" id="task2" checked>
-                                        <label for="task2"></label>
-                                    </div>
-                                    <div class="task-details">
-                                        <div class="task-title">Design review meeting</div>
-                                        <div class="task-meta">
-                                            <span class="task-priority medium">Medium</span>
-                                            <span class="task-due">Completed</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="task-item">
-                                    <div class="task-checkbox">
-                                        <input type="checkbox" id="task3">
-                                        <label for="task3"></label>
-                                    </div>
-                                    <div class="task-details">
-                                        <div class="task-title">Update documentation</div>
-                                        <div class="task-meta">
-                                            <span class="task-priority low">Low</span>
-                                            <span class="task-due">Tomorrow</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="add-task">
-                                <input type="text" placeholder="Add a new task...">
-                                <button><i class="fas fa-plus"></i></button>
-                            </div>
-                        </div>
-                        
-                        <div class="tab-content" id="calendar-tab">
-                            <div class="calendar-header">
-                                <h3><i class="fas fa-calendar-alt"></i> Calendar</h3>
-                                <div class="calendar-nav">
-                                    <button><i class="fas fa-chevron-left"></i></button>
-                                    <span class="current-month">February 2024</span>
-                                    <button><i class="fas fa-chevron-right"></i></button>
-                                </div>
-                            </div>
-                            <div class="calendar-grid">
-                                <div class="calendar-weekdays">
-                                    <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
-                                </div>
-                                <div class="calendar-days"></div>
-                            </div>
-                            <div class="calendar-events">
-                                <div class="event-item">
-                                    <div class="event-time">14:30</div>
-                                    <div class="event-details">
-                                        <div class="event-title">Team Meeting</div>
-                                        <div class="event-location">Conference Room A</div>
-                                    </div>
-                                </div>
-                                <div class="event-item">
-                                    <div class="event-time">16:00</div>
-                                    <div class="event-details">
-                                        <div class="event-title">Client Presentation</div>
-                                        <div class="event-location">Online</div>
                                     </div>
                                 </div>
                             </div>
@@ -281,97 +319,118 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section id="features" class="features">
-        <div class="container">
-            <h2 class="section-title">Everything you need, nothing you don't</h2>
-            <p class="section-subtitle">Designed with focus in mind</p>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-sticky-note"></i>
+        </section>
+        <section id="features" class="features">
+            <div class="container">
+                <h2 class="section-title">Everything you need, nothing you don't</h2>
+                <p class="section-subtitle">Designed with focus in mind</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-sticky-note"></i>
+                        </div>
+                        <h3>Smart Notes</h3>
+                        <p>Markdown support, tags, search, and elegant organization. Your thoughts, perfectly captured.</p>
                     </div>
-                    <h3>Smart Notes</h3>
-                    <p>Markdown support, tags, search, and elegant organization. Your thoughts, perfectly captured.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-tasks"></i>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h3>Task Management</h3>
+                        <p>Priority levels, due dates, and smart filtering. Stay on top of what matters.</p>
                     </div>
-                    <h3>Task Management</h3>
-                    <p>Priority levels, due dates, and smart filtering. Stay on top of what matters.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-paint-brush"></i>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <h3>Digital Canvas</h3>
+                        <p>Draw, sketch, annotate. Perfect for brainstorming and visual thinking.</p>
                     </div>
-                    <h3>Digital Canvas</h3>
-                    <p>Draw, sketch, annotate. Perfect for brainstorming and visual thinking.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-calendar-alt"></i>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3>Calendar & Events</h3>
+                        <p>Monthly/weekly views with event management. Never miss important dates.</p>
                     </div>
-                    <h3>Calendar & Events</h3>
-                    <p>Monthly/weekly views with event management. Never miss important dates.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-cloud"></i>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <h3>Cloud Sync</h3>
+                        <p>Automatic backup and sync across devices. Your data, always secure.</p>
                     </div>
-                    <h3>Cloud Sync</h3>
-                    <p>Automatic backup and sync across devices. Your data, always secure.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-eye-slash"></i>
-                    </div>
-                    <h3>Focus Mode</h3>
-                    <p>Distraction-free interface. Work without interruptions.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title">Get in touch</h2>
-            <p class="section-subtitle">Have questions or feedback? We'd love to hear from you</p>
-            
-            <div class="contact-info">
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <h4>Email</h4>
-                        <p>tufn-off@proton.me</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fab fa-github"></i>
-                    <div>
-                        <h4>GitHub</h4>
-                        <p>github.com/tufn</p>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-globe"></i>
-                    <div>
-                        <h4>Website</h4>
-                        <p>http://tufn.duckdns.org/</p>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-eye-slash"></i>
+                        </div>
+                        <h3>Focus Mode</h3>
+                        <p>Distraction-free interface. Work without interruptions.</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
+        </section>
+        <section class="faq">
+            <div class="container">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h3>What is Tufn?</h3>
+                        <p>Tufn is a minimalist all-in-one productivity app that combines notes, tasks, digital canvas, and calendar in one elegant interface designed for maximum focus.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>When will Tufn launch?</h3>
+                        <p>Tufn is currently in development with 63% progress and estimated to launch in 2027. Join our waitlist to get early access.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>What makes Tufn different?</h3>
+                        <p>Unlike other productivity tools, Tufn offers a truly minimalist interface with integrated digital canvas for brainstorming, all while maintaining focus on essential features.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Is Tufn free?</h3>
+                        <p>Tufn will offer a free version with core features and optional premium upgrades for advanced functionality.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>What platforms will Tufn support?</h3>
+                        <p>Tufn will be available on Web, iOS, and Android with full cloud synchronization across all devices.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Can I try Tufn now?</h3>
+                        <p>While in development, you can join our waitlist to get updates and be among the first to try Tufn when it launches.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2 class="section-title">Get in touch</h2>
+                <p class="section-subtitle">Have questions or feedback? We'd love to hear from you</p>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>tufn-off@proton.me</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-github"></i>
+                        <div>
+                            <h4>GitHub</h4>
+                            <p>github.com/tufn</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-globe"></i>
+                        <div>
+                            <h4>Website</h4>
+                            <p>https://tufn.github.io/</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -407,7 +466,68 @@
             </div>
         </div>
     </footer>
-
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqSchema = {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "What is Tufn?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Tufn is a minimalist all-in-one productivity app that combines notes, tasks, digital canvas, and calendar in one elegant interface designed for maximum focus."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "When will Tufn launch?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Tufn is currently in development with 63% progress and estimated to launch in 2027. Join our waitlist to get early access."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "What makes Tufn different?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Unlike other productivity tools, Tufn offers a truly minimalist interface with integrated digital canvas for brainstorming, all while maintaining focus on essential features."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Is Tufn free?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Tufn will offer a free version with core features and optional premium upgrades for advanced functionality."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "What platforms will Tufn support?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Tufn will be available on Web, iOS, and Android with full cloud synchronization across all devices."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Can I try Tufn now?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "While in development, you can join our waitlist to get updates and be among the first to try Tufn when it launches."
+                        }
+                    }
+                ]
+            };
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.text = JSON.stringify(faqSchema);
+            document.head.appendChild(script);
+        });
+    </script>
 </body>
 </html>
