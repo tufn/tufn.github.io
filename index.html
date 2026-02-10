@@ -19,34 +19,6 @@
     <meta property="twitter:title" content="Tufn: Minimalist Productivity App">
     <meta property="twitter:description" content="Notes, tasks, canvas & calendar in one elegant interface.">
     <meta property="twitter:image" content="https://tufn.github.io/images/tufn-preview.png">
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "Tufn",
-        "applicationCategory": "ProductivityApplication",
-        "operatingSystem": "Web, iOS, Android",
-        "description": "Minimalist all-in-one productivity app for notes, tasks, canvas, and calendar",
-        "url": "https://tufn.github.io/",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
-        "featureList": "Smart Notes, Task Management, Digital Canvas, Calendar Integration, Cloud Sync, Focus Mode",
-        "softwareVersion": "1.0",
-        "releaseNotes": "Launching 2027",
-        "author": {
-            "@type": "Organization",
-            "name": "Tufn"
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "ratingCount": "1000"
-        }
-    }
-    </script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -80,17 +52,13 @@
                         <a href="development.html" class="btn btn-primary">
                             <i class="fas fa-code"></i> View Development Status
                         </a>
-                        <div class="waitlist-container">
-                            <input type="email" id="waitlist-email" placeholder="Inserisci la tua email" required>
-                            <button class="btn btn-secondary" id="join-waitlist">
-                                <i class="fas fa-paper-plane"></i> Join Waitlist
-                            </button>
-                            <div class="stat">
-                                <span class="stat-number" id="waitlist-count">0</span>
-                                <span class="stat-label">Waitlist Signups</span>
-                            </div>
+                        <button class="btn btn-secondary" id="join-waitlist">
+                            <i class="fas fa-paper-plane"></i> Join Waitlist
+                        </button>
+                        <div class="waitlist-counter">
+                            <span class="stat-number" id="waitlist-count">0</span>
+                            <span class="stat-label">Waitlist Signups</span>
                         </div>
-
                         <div class="stat">
                             <span class="stat-number">63%</span>
                             <span class="stat-label">Development Progress</span>
@@ -122,7 +90,7 @@
                         </div>
                         <div class="app-content">
                             <div class="tab-content active" id="dashboard-tab">
-                                <div class="time-display" id="current-time">14:30</div>
+                                <div class="time-display" id="current-time">00:00</div>
                                 <div class="dashboard-grid">
                                     <div class="preview-card card-1">
                                         <div class="card-header">
@@ -180,117 +148,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-content" id="canvas-tab">
-                                <div class="canvas-header">
-                                    <h3><i class="fas fa-paint-brush"></i> Digital Canvas</h3>
-                                    <div class="canvas-tools">
-                                        <button class="canvas-tool active"><i class="fas fa-pen"></i></button>
-                                        <button class="canvas-tool"><i class="fas fa-eraser"></i></button>
-                                        <button class="canvas-tool"><i class="fas fa-shapes"></i></button>
-                                    </div>
-                                </div>
-                                <div class="canvas-area">
-                                    <div class="canvas-grid"></div>
-                                    <div class="canvas-drawing">
-                                        <div class="drawing-item shape-1"></div>
-                                        <div class="drawing-item shape-2"></div>
-                                        <div class="drawing-item shape-3"></div>
-                                        <div class="drawing-text">Brainstorm → Wireframe → Prototype</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-content" id="notes-tab">
-                                <div class="notes-header">
-                                    <h3><i class="fas fa-sticky-note"></i> Smart Notes</h3>
-                                    <button class="new-note-btn">+ New Note</button>
-                                </div>
-                                <div class="notes-list">
-                                    <div class="note-item">
-                                        <div class="note-title">Project Requirements</div>
-                                        <div class="note-preview">Initial requirements gathering completed. Need to finalize...</div>
-                                        <div class="note-tags">
-                                            <span class="tag">work</span>
-                                            <span class="tag">urgent</span>
-                                        </div>
-                                    </div>
-                                    <div class="note-item">
-                                        <div class="note-title">Meeting Notes</div>
-                                        <div class="note-preview">Key decisions from today's design review...</div>
-                                        <div class="note-tags">
-                                            <span class="tag">meeting</span>
-                                        </div>
-                                    </div>
-                                    <div class="note-item">
-                                        <div class="note-title">Ideas & Inspiration</div>
-                                        <div class="note-preview">UI patterns to explore for the dashboard...</div>
-                                        <div class="note-tags">
-                                            <span class="tag">ideas</span>
-                                            <span class="tag">design</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-content" id="tasks-tab">
-                                <div class="tasks-header">
-                                    <h3><i class="fas fa-tasks"></i> Task Management</h3>
-                                    <div class="task-filters">
-                                        <button class="filter-btn active">All</button>
-                                        <button class="filter-btn">Today</button>
-                                        <button class="filter-btn">High</button>
-                                    </div>
-                                </div>
-                                <div class="tasks-list">
-                                    <div class="task-item">
-                                        <div class="task-checkbox">
-                                            <input type="checkbox" id="task1">
-                                            <label for="task1"></label>
-                                        </div>
-                                        <div class="task-details">
-                                            <div class="task-title">Complete project proposal</div>
-                                            <div class="task-meta">
-                                                <span class="task-priority high">High</span>
-                                                <span class="task-due">Today 18:00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="task-item">
-                                        <div class="task-checkbox">
-                                            <input type="checkbox" id="task2" checked>
-                                            <label for="task2"></label>
-                                        </div>
-                                        <div class="task-details">
-                                            <div class="task-title">Design review meeting</div>
-                                            <div class="task-meta">
-                                                <span class="task-priority medium">Medium</span>
-                                                <span class="task-due">Completed</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="task-item">
-                                        <div class="task-checkbox">
-                                            <input type="checkbox" id="task3">
-                                            <label for="task3"></label>
-                                        </div>
-                                        <div class="task-details">
-                                            <div class="task-title">Update documentation</div>
-                                            <div class="task-meta">
-                                                <span class="task-priority low">Low</span>
-                                                <span class="task-due">Tomorrow</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="add-task">
-                                    <input type="text" placeholder="Add a new task...">
-                                    <button><i class="fas fa-plus"></i></button>
-                                </div>
-                            </div>
                             <div class="tab-content" id="calendar-tab">
                                 <div class="calendar-header">
                                     <h3><i class="fas fa-calendar-alt"></i> Calendar</h3>
                                     <div class="calendar-nav">
                                         <button><i class="fas fa-chevron-left"></i></button>
-                                        <span class="current-month">February 2024</span>
+                                        <span class="current-month"></span>
                                         <button><i class="fas fa-chevron-right"></i></button>
                                     </div>
                                 </div>
@@ -299,22 +162,6 @@
                                         <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
                                     </div>
                                     <div class="calendar-days"></div>
-                                </div>
-                                <div class="calendar-events">
-                                    <div class="event-item">
-                                        <div class="event-time">14:30</div>
-                                        <div class="event-details">
-                                            <div class="event-title">Team Meeting</div>
-                                            <div class="event-location">Conference Room A</div>
-                                        </div>
-                                    </div>
-                                    <div class="event-item">
-                                        <div class="event-time">16:00</div>
-                                        <div class="event-details">
-                                            <div class="event-title">Client Presentation</div>
-                                            <div class="event-location">Online</div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -402,13 +249,44 @@
         </div>
     </footer>
 
+    <div id="waitlist-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3>Join Waitlist</h3>
+            <p>Be the first to know when Tufn launches. Enter your email below:</p>
+            <div class="form-group">
+                <input type="email" id="waitlist-email" placeholder="your.email@example.com" required>
+                <div class="error-message" id="email-error"></div>
+            </div>
+            <button class="btn btn-primary" id="submit-waitlist">Join Waitlist</button>
+        </div>
+    </div>
+
+    <div id="download-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3>Download Tufn</h3>
+            <div class="download-options">
+                <div class="download-option">
+                    <i class="fab fa-windows"></i>
+                    <p>Windows</p>
+                    <button class="download-btn" data-platform="windows">Download</button>
+                </div>
+                <div class="download-option">
+                    <i class="fab fa-apple"></i>
+                    <p>macOS</p>
+                    <button class="download-btn" data-platform="mac">Download</button>
+                </div>
+                <div class="download-option">
+                    <i class="fab fa-linux"></i>
+                    <p>Linux</p>
+                    <button class="download-btn" data-platform="linux">Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const supabase = supabase.createClient(
-            "https://hadkdtctdwwoucpyonob.supabase.co",
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhhZGtkdGN0ZHd3b3VjcHlvbm9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MjQyODYsImV4cCI6MjA4NjMwMDI4Nn0.hchfw9-mNT6qi5Ctbjwm7XcNT1QvzfjqoJ21kXBTHAg"
-        );
-    </script>
     <script src="script.js"></script>
 </body>
 </html>
