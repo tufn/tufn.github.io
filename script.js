@@ -159,9 +159,11 @@ const updateWaitlistCount = async () => {
   }
   
   try {
-    const { count, error } = await tufnSupabase
-      .from('waitlist')
-      .select('*', { count: 'exact', head: true });
+    const { data, error } = await tufnSupabase
+      .from('waitlist_counter')
+      .select('count')
+      .eq('id', 1) 
+      .single(); 
     
     if (error) {
       console.error('Error fetching waitlist count:', error);
@@ -171,8 +173,9 @@ const updateWaitlistCount = async () => {
       return;
     }
     
-    if (elements.waitlistCountEl && typeof count === 'number') {
-      animateNumber(elements.waitlistCountEl, count);
+    // animate
+    if (elements.waitlistCountEl && data && typeof data.count === 'number') {
+      animateNumber(elements.waitlistCountEl, data.count);
     }
   } catch (error) {
     console.error('Waitlist count error:', error);
@@ -181,6 +184,7 @@ const updateWaitlistCount = async () => {
     }
   }
 };
+
 
 const animateNumber = (element, target) => {
   const duration = 1000;
@@ -290,62 +294,74 @@ const initWaitlist = () => {
       elements.submitWaitlist.disabled = true;
       elements.submitWaitlist.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Joining...';
       
-      try {
-        const fp = security.sanitizeInput(getFingerprint());
-        const sanitizedEmail = security.sanitizeInput(email);
-        
-        console.log('Inserting into waitlist...');
-        
-        // Insert into Supabase
-        const { data, error } = await tufnSupabase
-          .from('waitlist')
-          .insert({
-            fingerprint: fp,
-            email: sanitizedEmail,
-            created_at: new Date().toISOString()
-          })
-          .select();
-        
-        if (error) {
-          console.error('Supabase error:', error);
-          // Check if duplicate
-          if (error.code === '23505' || error.message.includes('duplicate')) {
-            throw new Error('This email is already on the waitlist');
-          }
-          throw error;
-        }
-        
-        console.log('Successfully added to waitlist:', data);
-        
-        // Success
-        localStorage.setItem('waitlist_joined', 'true');
-        elements.waitlistEmail.value = '';
-        elements.successMessage.style.display = 'block';
-        
-        setTimeout(() => {
-          elements.waitlistModal.classList.remove('active');
-          elements.successMessage.style.display = 'none';
-          elements.joinBtn.disabled = true;
-          elements.joinBtn.innerHTML = '<i class="fas fa-check"></i> You\'re on the waitlist!';
-          elements.joinBtn.classList.remove('pulse');
-          
-          if (elements.newsletterBtn) {
-            elements.newsletterBtn.disabled = true;
-            elements.newsletterBtn.innerHTML = '<i class="fas fa-check"></i> Already subscribed';
-          }
-        }, 2000);
-        
-        updateWaitlistCount();
-        showToast('Successfully joined the waitlist!', 'success');
-        
-      } catch (error) {
-        console.error('Waitlist submission error:', error);
-        elements.emailError.textContent = error.message || 'Failed to join waitlist. Please try again.';
-        showToast(error.message || 'Failed to join waitlist', 'error');
-      } finally {
-        elements.submitWaitlist.disabled = false;
-        elements.submitWaitlist.innerHTML = '<i class="fas fa-paper-plane"></i> Join Waitlist';
-      }
+try {
+  const fp = security.sanitizeInput(getFingerprint());
+  const sanitizedEmail = security.sanitizeInput(email);
+
+  console.log('Inserting into waitlist...');
+  
+  // Insert into waitlist
+  const { data, error } = await tufnSupabase
+    .from('waitlist')
+    .insert({
+      fingerprint: fp,
+      email: sanitizedEmail,
+      created_at: new Date().toISOString()
+    })
+    .select();
+
+  if (error) {
+    console.error('Supabase error:', error);
+    // Check if duplicate
+    if (error.code === '23505' || error.message.includes('duplicate')) {
+      throw new Error('This email is already on the waitlist');
+    }
+    throw error;
+  }
+
+  console.log('Successfully added to waitlist:', data);
+
+  // Increment the counter in the 'waitlist_counter' table
+  const { error: counterError } = await tufnSupabase
+    .from('waitlist_counter')
+    .update({ count: tufnSupabase.raw('count + 1') }) // Increment the count
+    .eq('id', 1); // Assuming only one record with id = 1 for the counter
+
+  if (counterError) {
+    console.error('Error incrementing waitlist counter:', counterError);
+  }
+
+  // Success
+  localStorage.setItem('waitlist_joined', 'true');
+  elements.waitlistEmail.value = '';
+  elements.successMessage.style.display = 'block';
+  
+  setTimeout(() => {
+    elements.waitlistModal.classList.remove('active');
+    elements.successMessage.style.display = 'none';
+    elements.joinBtn.disabled = true;
+    elements.joinBtn.innerHTML = '<i class="fas fa-check"></i> You\'re on the waitlist!';
+    elements.joinBtn.classList.remove('pulse');
+    
+    if (elements.newsletterBtn) {
+      elements.newsletterBtn.disabled = true;
+      elements.newsletterBtn.innerHTML = '<i class="fas fa-check"></i> Already subscribed';
+    }
+  }, 2000);
+
+  updateWaitlistCount(); // Update the counter display
+  showToast('Successfully joined the waitlist!', 'success');
+  
+} catch (error) {
+  console.error('Waitlist submission error:', error);
+  elements.emailError.textContent = error.message || 'Failed to join waitlist. Please try again.';
+  showToast(error.message || 'Failed to join waitlist', 'error');
+} finally {
+  elements.submitWaitlist.disabled = false;
+  elements.submitWaitlist.innerHTML = '<i class="fas fa-paper-plane"></i> Join Waitlist';
+}
+
+
     });
   }
 };
