@@ -6,17 +6,17 @@
 const SUPABASE_URL = "https://hadkdtctdwwoucpyonob.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhhZGtkdGN0ZHd3b3VjcHlvbm9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MjQyODYsImV4cCI6MjA4NjMwMDI4Nn0.hchfw9-mNT6qi5Ctbjwm7XcNT1QvzfjqoJ21kXBTHAg";
 
-// Initialize Supabase Client
-let supabaseClient;
+// Initialize Supabase Client (use different name to avoid conflict with global supabase object)
+let tufnSupabase;
 
 // Wait for Supabase library to load
 const initSupabase = () => {
   if (typeof window.supabase !== 'undefined') {
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    console.log('Supabase initialized successfully');
+    tufnSupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('✅ Supabase initialized successfully');
     return true;
   }
-  console.error('Supabase library not loaded');
+  console.error('❌ Supabase library not loaded');
   return false;
 };
 
@@ -150,7 +150,7 @@ const showToast = (message, type = 'info') => {
 // Waitlist Functions
 // ==========================================
 const updateWaitlistCount = async () => {
-  if (!supabaseClient) {
+  if (!tufnSupabase) {
     console.log('Supabase not initialized yet');
     if (elements.waitlistCountEl) {
       elements.waitlistCountEl.textContent = '0';
@@ -159,7 +159,7 @@ const updateWaitlistCount = async () => {
   }
   
   try {
-    const { count, error } = await supabaseClient
+    const { count, error } = await tufnSupabase
       .from('waitlist')
       .select('*', { count: 'exact', head: true });
     
@@ -250,7 +250,7 @@ const initWaitlist = () => {
       e.preventDefault();
       console.log('Form submitted');
       
-      if (!supabaseClient) {
+      if (!tufnSupabase) {
         showToast('Service not ready. Please try again in a moment.', 'error');
         return;
       }
@@ -297,7 +297,7 @@ const initWaitlist = () => {
         console.log('Inserting into waitlist...');
         
         // Insert into Supabase
-        const { data, error } = await supabaseClient
+        const { data, error } = await tufnSupabase
           .from('waitlist')
           .insert({
             fingerprint: fp,
