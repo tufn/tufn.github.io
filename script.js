@@ -3,8 +3,7 @@
 const supabase = supabase.createClient(
   "https://hadkdtctdwwoucpyonob.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhhZGtkdGN0ZHd3b3VjcHlvbm9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MjQyODYsImV4cCI6MjA4NjMwMDI4Nn0.hchfw9-mNT6qi5Ctbjwm7XcNT1QvzfjqoJ21kXBTHAg"
-)
-
+);
 
 const elements = {
     themeToggle: document.getElementById('theme-toggle'),
@@ -17,6 +16,7 @@ const elements = {
     calendarDays: document.querySelector('.calendar-days'),
     joinBtn: document.getElementById('join-waitlist'),
     waitlistCountEl: document.getElementById('waitlist-count'),
+    emailInput: document.getElementById('waitlist-email'),
     appTabs: document.querySelectorAll('.app-tab'),
     tabContents: document.querySelectorAll('.tab-content')
 };
@@ -71,10 +71,14 @@ const fingerprint = () => {
 
 const updateWaitlist = async () => {
     try {
-        const { data, error } = await supabase.rpc('waitlist_count');
+        const { count, error } = await supabase
+            .from('waitlist')
+            .select('*', { count: 'exact', head: true });
+        
         if (error) throw error;
-        if (elements.waitlistCountEl && typeof data === 'number') {
-            elements.waitlistCountEl.textContent = `${security.sanitizeHTML(data.toString())} Waitlist Signups`;
+        
+        if (elements.waitlistCountEl && typeof count === 'number') {
+            elements.waitlistCountEl.textContent = `${security.sanitizeHTML(count.toString())} Waitlist Signups`;
         }
     } catch (error) {
         console.error('Waitlist count error:', error);
@@ -102,20 +106,43 @@ const initWaitlist = async () => {
             return;
         }
         
+        let email = null;
+        if (elements.emailInput) {
+            email = elements.emailInput.value.trim();
+            if (!email) {
+                alert('Please enter a valid email address!');
+                return;
+            }
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address!');
+                return;
+            }
+        }
+        
         try {
             const fp = security.sanitizeInput(fingerprint());
+            const record = {
+                fingerprint: fp,
+                created_at: new Date().toISOString()
+            };
+            
+            if (email) {
+                record.email = security.sanitizeInput(email);
+            }
+            
             const { error } = await supabase
                 .from('waitlist')
-                .insert({ 
-                    fingerprint: fp,
-                    created_at: new Date().toISOString()
-                });
+                .insert(record);
             
             if (error) throw error;
             
             localStorage.setItem('waitlist_joined', 'true');
             elements.joinBtn.disabled = true;
             elements.joinBtn.textContent = "You're on the waitlist ✓";
+            if (elements.emailInput) {
+                elements.emailInput.value = '';
+            }
             updateWaitlist();
         } catch (error) {
             console.error('Waitlist error:', error);
