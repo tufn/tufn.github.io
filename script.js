@@ -1,31 +1,70 @@
-const supabase = supabase.createClient(
-  "https://hadkdtctdwwoucpyonob.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhhZGtkdGN0ZHd3b3VjcHlvbm9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MjQyODYsImV4cCI6MjA4NjMwMDI4Nn0.hchfw9-mNT6qi5Ctbjwm7XcNT1QvzfjqoJ21kXBTHAg"
-);
+// ==========================================
+// TUFN - Main JavaScript
+// ==========================================
 
+// Supabase Configuration
+const SUPABASE_URL = "https://hadkdtctdwwoucpyonob.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhhZGtkdGN0ZHd3b3VjcHlvbm9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MjQyODYsImV4cCI6MjA4NjMwMDI4Nn0.hchfw9-mNT6qi5Ctbjwm7XcNT1QvzfjqoJ21kXBTHAg";
+
+// Initialize Supabase Client
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ==========================================
+// DOM Elements
+// ==========================================
 const elements = {
+  // Theme & Navigation
   themeToggle: document.getElementById('theme-toggle'),
+  scrollTop: document.getElementById('scroll-top'),
   mobileMenuBtn: document.querySelector('.mobile-menu-btn'),
   navLinks: document.querySelector('.nav-links'),
-  downloadModal: document.getElementById('download-modal'),
-  downloadBtns: document.querySelectorAll('.download-btn'),
-  modalCloseBtns: document.querySelectorAll('.modal-close'),
+  
+  // Hero & Stats
   currentTimeEl: document.getElementById('current-time'),
-  calendarDays: document.querySelector('.calendar-days'),
-  joinBtn: document.getElementById('join-waitlist'),
+  currentDateEl: document.getElementById('current-date'),
   waitlistCountEl: document.getElementById('waitlist-count'),
+  
+  // Tabs
   appTabs: document.querySelectorAll('.app-tab'),
   tabContents: document.querySelectorAll('.tab-content'),
+  
+  // Calendar
+  calendarDays: document.querySelector('.calendar-days'),
+  currentMonthEl: document.querySelector('.current-month'),
+  prevMonthBtn: document.getElementById('prev-month'),
+  nextMonthBtn: document.getElementById('next-month'),
+  
+  // Canvas
+  drawingCanvas: document.getElementById('drawing-canvas'),
+  canvasColor: document.getElementById('canvas-color'),
+  toolBtns: document.querySelectorAll('.tool-btn'),
+  
+  // Waitlist Modal
+  joinBtn: document.getElementById('join-waitlist'),
+  newsletterBtn: document.getElementById('newsletter-signup'),
+  waitlistModal: document.getElementById('waitlist-modal'),
+  waitlistForm: document.getElementById('waitlist-form'),
   waitlistEmail: document.getElementById('waitlist-email'),
   submitWaitlist: document.getElementById('submit-waitlist'),
-  waitlistModal: document.getElementById('waitlist-modal'),
-  emailError: document.getElementById('email-error')
+  emailError: document.getElementById('email-error'),
+  successMessage: document.getElementById('success-message'),
+  modalCloseBtns: document.querySelectorAll('.modal-close'),
+  
+  // FAQ
+  faqItems: document.querySelectorAll('.faq-item'),
+  
+  // Toast
+  toast: document.getElementById('toast')
 };
 
+// ==========================================
+// Security & Validation
+// ==========================================
 const security = {
   rateLimits: new Map(),
   lastRequest: 0,
   
+  // Sanitize text input
   sanitizeInput: (input) => {
     if (typeof input !== 'string') return input;
     return input
@@ -36,12 +75,14 @@ const security = {
       .substring(0, 500);
   },
   
+  // Sanitize HTML
   sanitizeHTML: (html) => {
     const div = document.createElement('div');
     div.textContent = html;
     return div.innerHTML;
   },
   
+  // Rate limiting
   checkRateLimit: (key, limit = 5, windowMs = 60000) => {
     const now = Date.now();
     const requests = security.rateLimits.get(key) || [];
@@ -56,247 +97,623 @@ const security = {
     return true;
   },
   
+  // Email validation
   validateEmail: (email) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   },
   
+  // Fingerprint validation
   validateFingerprint: (fp) => {
     return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(fp);
   }
 };
 
-const fingerprint = () => {
-  let fp = localStorage.getItem('fp');
+// ==========================================
+// Fingerprint Management
+// ==========================================
+const getFingerprint = () => {
+  let fp = localStorage.getItem('tufn_fp');
   if (!fp || !security.validateFingerprint(fp)) {
     fp = crypto.randomUUID();
-    localStorage.setItem('fp', fp);
+    localStorage.setItem('tufn_fp', fp);
   }
   return fp;
 };
 
-const updateWaitlist = async () => {
+// ==========================================
+// Toast Notifications
+// ==========================================
+const showToast = (message, type = 'info') => {
+  if (!elements.toast) return;
+  
+  elements.toast.textContent = message;
+  elements.toast.className = `toast ${type} show`;
+  
+  setTimeout(() => {
+    elements.toast.classList.remove('show');
+  }, 3000);
+};
+
+// ==========================================
+// Waitlist Functions
+// ==========================================
+const updateWaitlistCount = async () => {
   try {
-    const { count, error } = await supabase
+    const { count, error } = await supabaseClient
       .from('waitlist')
       .select('*', { count: 'exact', head: true });
     
-    if (error) throw error;
+    if (error) {
+      console.error('Error fetching waitlist count:', error);
+      if (elements.waitlistCountEl) {
+        elements.waitlistCountEl.textContent = '...';
+      }
+      return;
+    }
     
     if (elements.waitlistCountEl && typeof count === 'number') {
-      elements.waitlistCountEl.textContent = `${security.sanitizeHTML(count.toString())} Waitlist Signups`;
+      animateNumber(elements.waitlistCountEl, count);
     }
   } catch (error) {
     console.error('Waitlist count error:', error);
+    if (elements.waitlistCountEl) {
+      elements.waitlistCountEl.textContent = '...';
+    }
   }
+};
+
+const animateNumber = (element, target) => {
+  const duration = 1000;
+  const start = parseInt(element.textContent) || 0;
+  const increment = (target - start) / (duration / 16);
+  let current = start;
+  
+  const timer = setInterval(() => {
+    current += increment;
+    if ((increment > 0 && current >= target) || (increment < 0 && current <= target)) {
+      element.textContent = target;
+      clearInterval(timer);
+    } else {
+      element.textContent = Math.floor(current);
+    }
+  }, 16);
 };
 
 const initWaitlist = () => {
   if (!elements.joinBtn) return;
   
+  // Check if user already joined
   if (localStorage.getItem('waitlist_joined')) {
     elements.joinBtn.disabled = true;
-    elements.joinBtn.textContent = "You're on the waitlist ✓";
-    updateWaitlist();
-    return;
+    elements.joinBtn.innerHTML = '<i class="fas fa-check"></i> You\'re on the waitlist!';
+    elements.joinBtn.classList.remove('pulse');
+    
+    if (elements.newsletterBtn) {
+      elements.newsletterBtn.disabled = true;
+      elements.newsletterBtn.innerHTML = '<i class="fas fa-check"></i> Already subscribed';
+    }
   }
   
-  elements.joinBtn.addEventListener('click', () => {
-    elements.waitlistModal.classList.add('active');
-  });
+  // Join button click
+  const openModal = () => {
+    if (elements.waitlistModal) {
+      elements.waitlistModal.classList.add('active');
+      setTimeout(() => {
+        elements.waitlistEmail?.focus();
+      }, 100);
+    }
+  };
   
-  elements.submitWaitlist.addEventListener('click', async () => {
+  elements.joinBtn?.addEventListener('click', openModal);
+  elements.newsletterBtn?.addEventListener('click', openModal);
+  
+  // Form submission
+  elements.waitlistForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // Rate limiting
     const now = Date.now();
-    if (now - security.lastRequest < 2000) return;
+    if (now - security.lastRequest < 2000) {
+      showToast('Please wait before trying again', 'warning');
+      return;
+    }
     security.lastRequest = now;
     
-    const rateLimitKey = `waitlist_${fingerprint()}`;
+    const rateLimitKey = `waitlist_${getFingerprint()}`;
     if (!security.checkRateLimit(rateLimitKey, 3, 30000)) {
-      alert('Please wait before trying again');
+      showToast('Too many requests. Please wait before trying again.', 'error');
       return;
     }
     
+    // Get and validate email
     const email = elements.waitlistEmail.value.trim();
     if (!email) {
       elements.emailError.textContent = 'Email is required';
+      elements.waitlistEmail.focus();
       return;
     }
     
     if (!security.validateEmail(email)) {
-      elements.emailError.textContent = 'Please enter a valid email';
+      elements.emailError.textContent = 'Please enter a valid email address';
+      elements.waitlistEmail.focus();
       return;
     }
     
+    // Clear previous errors
+    elements.emailError.textContent = '';
+    
+    // Disable submit button
+    elements.submitWaitlist.disabled = true;
+    elements.submitWaitlist.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Joining...';
+    
     try {
-      const fp = security.sanitizeInput(fingerprint());
-      const { error } = await supabase
+      const fp = security.sanitizeInput(getFingerprint());
+      const sanitizedEmail = security.sanitizeInput(email);
+      
+      // Insert into Supabase
+      const { data, error } = await supabaseClient
         .from('waitlist')
         .insert({
           fingerprint: fp,
-          email: security.sanitizeInput(email),
+          email: sanitizedEmail,
           created_at: new Date().toISOString()
-        });
+        })
+        .select();
       
-      if (error) throw error;
+      if (error) {
+        // Check if duplicate
+        if (error.code === '23505') {
+          throw new Error('This email is already on the waitlist');
+        }
+        throw error;
+      }
       
+      // Success
       localStorage.setItem('waitlist_joined', 'true');
-      elements.joinBtn.disabled = true;
-      elements.joinBtn.textContent = "You're on the waitlist ✓";
-      elements.waitlistModal.classList.remove('active');
       elements.waitlistEmail.value = '';
-      elements.emailError.textContent = '';
-      updateWaitlist();
-      alert('Thank you! You are now on the waitlist.');
+      elements.successMessage.style.display = 'block';
+      
+      setTimeout(() => {
+        elements.waitlistModal.classList.remove('active');
+        elements.successMessage.style.display = 'none';
+        elements.joinBtn.disabled = true;
+        elements.joinBtn.innerHTML = '<i class="fas fa-check"></i> You\'re on the waitlist!';
+        elements.joinBtn.classList.remove('pulse');
+        
+        if (elements.newsletterBtn) {
+          elements.newsletterBtn.disabled = true;
+          elements.newsletterBtn.innerHTML = '<i class="fas fa-check"></i> Already subscribed';
+        }
+      }, 2000);
+      
+      updateWaitlistCount();
+      showToast('Successfully joined the waitlist!', 'success');
+      
     } catch (error) {
-      console.error('Waitlist error:', error);
-      alert('Failed to join waitlist. Please try again.');
+      console.error('Waitlist submission error:', error);
+      elements.emailError.textContent = error.message || 'Failed to join waitlist. Please try again.';
+      showToast(error.message || 'Failed to join waitlist', 'error');
+    } finally {
+      elements.submitWaitlist.disabled = false;
+      elements.submitWaitlist.innerHTML = '<i class="fas fa-paper-plane"></i> Join Waitlist';
     }
   });
 };
 
-if (elements.themeToggle) {
+// ==========================================
+// Theme Toggle
+// ==========================================
+const initTheme = () => {
+  if (!elements.themeToggle) return;
+  
+  // Load saved theme
+  const savedTheme = localStorage.getItem('tufn_theme');
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-theme');
+    elements.themeToggle.querySelector('i').className = 'fas fa-sun';
+  }
+  
+  // Toggle theme
   elements.themeToggle.addEventListener('click', () => {
     const icon = elements.themeToggle.querySelector('i');
     const isDark = document.body.classList.toggle('dark-theme');
     icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    localStorage.setItem('tufn_theme', isDark ? 'dark' : 'light');
+  });
+};
+
+// ==========================================
+// Mobile Menu
+// ==========================================
+const initMobileMenu = () => {
+  if (!elements.mobileMenuBtn || !elements.navLinks) return;
+  
+  elements.mobileMenuBtn.addEventListener('click', () => {
+    elements.navLinks.classList.toggle('active');
+    const icon = elements.mobileMenuBtn.querySelector('i');
+    icon.className = elements.navLinks.classList.contains('active') 
+      ? 'fas fa-times' 
+      : 'fas fa-bars';
   });
   
-  if (localStorage.getItem('theme') === 'dark') {
-    document.body.classList.add('dark-theme');
-    elements.themeToggle.querySelector('i').className = 'fas fa-sun';
-  }
-}
-
-if (elements.mobileMenuBtn) {
-  elements.mobileMenuBtn.addEventListener('click', () => {
-    elements.navLinks.style.display = 
-      elements.navLinks.style.display === 'flex' ? 'none' : 'flex';
-  });
-}
-
-window.addEventListener('resize', () => {
-  if (window.innerWidth > 768 && elements.navLinks) {
-    elements.navLinks.style.display = '';
-  }
-});
-
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', e => {
-    e.preventDefault();
-    const targetId = security.sanitizeInput(anchor.getAttribute('href'));
-    const target = document.querySelector(targetId);
-    if (!target) return;
-    
-    if (elements.navLinks && window.innerWidth <= 768) {
-      elements.navLinks.style.display = 'none';
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.nav') && elements.navLinks.classList.contains('active')) {
+      elements.navLinks.classList.remove('active');
+      elements.mobileMenuBtn.querySelector('i').className = 'fas fa-bars';
     }
-    
+  });
+};
+
+// ==========================================
+// Smooth Scroll
+// ==========================================
+const initSmoothScroll = () => {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = anchor.getAttribute('href');
+      if (targetId === '#') return;
+      
+      const target = document.querySelector(targetId);
+      if (!target) return;
+      
+      // Close mobile menu if open
+      if (elements.navLinks?.classList.contains('active')) {
+        elements.navLinks.classList.remove('active');
+        elements.mobileMenuBtn.querySelector('i').className = 'fas fa-bars';
+      }
+      
+      // Scroll to target
+      const headerOffset = 80;
+      const elementPosition = target.offsetTop;
+      const offsetPosition = elementPosition - headerOffset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    });
+  });
+};
+
+// ==========================================
+// Scroll to Top Button
+// ==========================================
+const initScrollTop = () => {
+  if (!elements.scrollTop) return;
+  
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      elements.scrollTop.classList.add('visible');
+    } else {
+      elements.scrollTop.classList.remove('visible');
+    }
+  });
+  
+  elements.scrollTop.addEventListener('click', () => {
     window.scrollTo({
-      top: target.offsetTop - 80,
+      top: 0,
       behavior: 'smooth'
     });
   });
-});
+};
 
-elements.appTabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    const tabId = security.sanitizeInput(tab.dataset.tab);
-    elements.appTabs.forEach(t => t.classList.remove('active'));
-    elements.tabContents.forEach(c => c.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById(`${tabId}-tab`)?.classList.add('active');
+// ==========================================
+// App Tabs
+// ==========================================
+const initTabs = () => {
+  elements.appTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tabId = tab.dataset.tab;
+      
+      // Remove active class from all tabs and contents
+      elements.appTabs.forEach(t => t.classList.remove('active'));
+      elements.tabContents.forEach(c => c.classList.remove('active'));
+      
+      // Add active class to clicked tab and corresponding content
+      tab.classList.add('active');
+      const content = document.getElementById(`${tabId}-tab`);
+      if (content) {
+        content.classList.add('active');
+      }
+    });
   });
-});
+};
 
+// ==========================================
+// Clock & Date
+// ==========================================
 const updateClock = () => {
   const now = new Date();
+  
   if (elements.currentTimeEl) {
-    elements.currentTimeEl.textContent = 
-      `${now.getHours().toString().padStart(2, '0')}:` +
-      `${now.getMinutes().toString().padStart(2, '0')}`;
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    elements.currentTimeEl.textContent = `${hours}:${minutes}`;
+  }
+  
+  if (elements.currentDateEl) {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    elements.currentDateEl.textContent = now.toLocaleDateString('en-US', options);
   }
 };
+
+// ==========================================
+// Calendar
+// ==========================================
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
 
 const initCalendar = () => {
   if (!elements.calendarDays) return;
   
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const firstDay = new Date(year, month, 1).getDay() || 7;
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  renderCalendar();
   
-  const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
+  elements.prevMonthBtn?.addEventListener('click', () => {
+    currentMonth--;
+    if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    }
+    renderCalendar();
+  });
   
-  const currentMonthEl = document.querySelector('.current-month');
-  if (currentMonthEl) {
-    currentMonthEl.textContent = `${monthNames[month]} ${year}`;
+  elements.nextMonthBtn?.addEventListener('click', () => {
+    currentMonth++;
+    if (currentMonth > 11) {
+      currentMonth = 0;
+      currentYear++;
+    }
+    renderCalendar();
+  });
+};
+
+const renderCalendar = () => {
+  const firstDay = new Date(currentYear, currentMonth, 1).getDay() || 7;
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const today = new Date();
+  
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  
+  if (elements.currentMonthEl) {
+    elements.currentMonthEl.textContent = `${monthNames[currentMonth]} ${currentYear}`;
   }
   
   let html = '';
-  for (let i = 1 - (firstDay - 1); i <= 42 - (firstDay - 1); i++) {
-    const isOther = i < 1 || i > daysInMonth;
-    const isToday = i === now.getDate();
-    const className = isOther ? 'calendar-day other' : 
-                     isToday ? 'calendar-day today' : 'calendar-day';
-    const dayNum = isOther ? ((i + daysInMonth - 1) % daysInMonth) + 1 : i;
-    html += `<div class="${security.sanitizeHTML(className)}">` +
-            security.sanitizeHTML(dayNum.toString()) + '</div>';
+  const totalCells = 42;
+  
+  for (let i = 1 - (firstDay - 1); i <= totalCells - (firstDay - 1); i++) {
+    const isOtherMonth = i < 1 || i > daysInMonth;
+    const isToday = i === today.getDate() && 
+                    currentMonth === today.getMonth() && 
+                    currentYear === today.getFullYear();
+    
+    let className = 'calendar-day';
+    if (isOtherMonth) className += ' other';
+    if (isToday) className += ' today';
+    
+    const dayNum = isOtherMonth 
+      ? (i < 1 ? new Date(currentYear, currentMonth, i).getDate() : i - daysInMonth)
+      : i;
+    
+    html += `<div class="${security.sanitizeHTML(className)}">${security.sanitizeHTML(dayNum.toString())}</div>`;
   }
+  
   elements.calendarDays.innerHTML = html;
 };
 
-elements.downloadBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    if (!security.checkRateLimit('download_modal', 10, 60000)) return;
-    elements.downloadModal.classList.add('active');
+// ==========================================
+// Canvas Drawing
+// ==========================================
+const initCanvas = () => {
+  const canvas = elements.drawingCanvas;
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext('2d');
+  let isDrawing = false;
+  let lastX = 0;
+  let lastY = 0;
+  let currentTool = 'pen';
+  let currentColor = elements.canvasColor?.value || '#6366f1';
+  
+  // Set canvas size
+  const resizeCanvas = () => {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+  };
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+  
+  // Tool selection
+  elements.toolBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      elements.toolBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentTool = btn.dataset.tool;
+    });
   });
-});
-
-elements.modalCloseBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    elements.downloadModal.classList.remove('active');
-    elements.waitlistModal.classList.remove('active');
+  
+  // Color picker
+  elements.canvasColor?.addEventListener('change', (e) => {
+    currentColor = e.target.value;
   });
-});
-
-if (elements.downloadModal) {
-  elements.downloadModal.addEventListener('click', e => {
-    if (e.target === elements.downloadModal) {
-      elements.downloadModal.classList.remove('active');
+  
+  // Drawing functions
+  const startDrawing = (e) => {
+    isDrawing = true;
+    const rect = canvas.getBoundingClientRect();
+    lastX = e.clientX - rect.left;
+    lastY = e.clientY - rect.top;
+  };
+  
+  const draw = (e) => {
+    if (!isDrawing) return;
+    
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    
+    if (currentTool === 'pen') {
+      ctx.strokeStyle = currentColor;
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+    } else if (currentTool === 'eraser') {
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.lineWidth = 10;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+      ctx.globalCompositeOperation = 'source-over';
     }
+    
+    lastX = x;
+    lastY = y;
+  };
+  
+  const stopDrawing = () => {
+    isDrawing = false;
+  };
+  
+  canvas.addEventListener('mousedown', startDrawing);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', stopDrawing);
+  canvas.addEventListener('mouseleave', stopDrawing);
+  
+  // Touch support
+  canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const mouseEvent = new MouseEvent('mousedown', {
+      clientX: touch.clientX,
+      clientY: touch.clientY
+    });
+    canvas.dispatchEvent(mouseEvent);
   });
-}
+  
+  canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const mouseEvent = new MouseEvent('mousemove', {
+      clientX: touch.clientX,
+      clientY: touch.clientY
+    });
+    canvas.dispatchEvent(mouseEvent);
+  });
+  
+  canvas.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    const mouseEvent = new MouseEvent('mouseup', {});
+    canvas.dispatchEvent(mouseEvent);
+  });
+};
 
-if (elements.waitlistModal) {
-  elements.waitlistModal.addEventListener('click', e => {
+// ==========================================
+// FAQ Accordion
+// ==========================================
+const initFAQ = () => {
+  elements.faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question');
+    if (!question) return;
+    
+    question.addEventListener('click', () => {
+      const isActive = item.classList.contains('active');
+      
+      // Close all items
+      elements.faqItems.forEach(i => i.classList.remove('active'));
+      
+      // Open clicked item if it wasn't active
+      if (!isActive) {
+        item.classList.add('active');
+      }
+    });
+  });
+};
+
+// ==========================================
+// Modal Controls
+// ==========================================
+const initModals = () => {
+  // Close buttons
+  elements.modalCloseBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      elements.waitlistModal?.classList.remove('active');
+      elements.emailError.textContent = '';
+      elements.successMessage.style.display = 'none';
+    });
+  });
+  
+  // Click outside to close
+  elements.waitlistModal?.addEventListener('click', (e) => {
     if (e.target === elements.waitlistModal) {
       elements.waitlistModal.classList.remove('active');
+      elements.emailError.textContent = '';
+      elements.successMessage.style.display = 'none';
     }
   });
-}
+  
+  // ESC key to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      elements.waitlistModal?.classList.remove('active');
+      elements.emailError.textContent = '';
+      elements.successMessage.style.display = 'none';
+    }
+  });
+};
 
+// ==========================================
+// Cleanup Rate Limits
+// ==========================================
+const cleanupRateLimits = () => {
+  const now = Date.now();
+  for (const [key, times] of security.rateLimits) {
+    const validTimes = times.filter(time => now - time < 600000);
+    if (validTimes.length === 0) {
+      security.rateLimits.delete(key);
+    } else {
+      security.rateLimits.set(key, validTimes);
+    }
+  }
+};
+
+// ==========================================
+// Initialize Everything
+// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize all features
+  initTheme();
+  initMobileMenu();
+  initSmoothScroll();
+  initScrollTop();
+  initTabs();
+  initCalendar();
+  initCanvas();
+  initFAQ();
+  initModals();
+  initWaitlist();
+  
+  // Update clock and date
   updateClock();
   setInterval(updateClock, 60000);
-  initCalendar();
-  initWaitlist();
-  updateWaitlist();
   
-  setInterval(() => {
-    const now = Date.now();
-    for (const [key, times] of security.rateLimits) {
-      const validTimes = times.filter(time => now - time < 600000);
-      if (validTimes.length === 0) {
-        security.rateLimits.delete(key);
-      } else {
-        security.rateLimits.set(key, validTimes);
-      }
-    }
-  }, 300000);
+  // Update waitlist count
+  updateWaitlistCount();
+  
+  // Cleanup rate limits periodically
+  setInterval(cleanupRateLimits, 300000);
 });
 
+// Cleanup on page unload
 window.addEventListener('beforeunload', () => {
   security.rateLimits.clear();
 });
