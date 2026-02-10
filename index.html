@@ -80,13 +80,13 @@
                         <a href="development.html" class="btn btn-primary">
                             <i class="fas fa-code"></i> View Development Status
                         </a>
-                        <a href="development.html" class="btn btn-secondary" id="join-waitlist-btn">
+                        <a href="#" class="btn btn-secondary" id="join-waitlist">
                             <i class="fas fa-paper-plane"></i> Join Waitlist
                         </a>
                         <div class="stat">
-                            <span class="stat-number">4</span>
+                            <span class="stat-number" id="waitlist-count">4</span>
                             <span class="stat-label">Waitlist Signups</span>
-                         </div>
+                        </div>
                         <div class="stat">
                             <span class="stat-number">63%</span>
                             <span class="stat-label">Development Progress</span>
@@ -386,146 +386,25 @@
                     </div>
                     <div class="faq-item">
                         <h3>Is Tufn free?</h3>
-                        <p>Tufn will offer a free version with core features and optional premium upgrades for advanced functionality.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h3>What platforms will Tufn support?</h3>
-                        <p>Tufn will be available on Web, iOS, and Android with full cloud synchronization across all devices.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h3>Can I try Tufn now?</h3>
-                        <p>While in development, you can join our waitlist to get updates and be among the first to try Tufn when it launches.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="contact" class="contact">
-            <div class="container">
-                <h2 class="section-title">Get in touch</h2>
-                <p class="section-subtitle">Have questions or feedback? We'd love to hear from you</p>
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h4>Email</h4>
-                            <p>tufn-off@proton.me</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fab fa-github"></i>
-                        <div>
-                            <h4>GitHub</h4>
-                            <p>github.com/tufn</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-globe"></i>
-                        <div>
-                            <h4>Website</h4>
-                            <p>https://tufn.github.io/</p>
-                        </div>
+                        <p>Tufn is completely free.</p>
                     </div>
                 </div>
             </div>
         </section>
     </main>
-    <footer class="footer">
+    <footer id="contact">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <span class="logo">tufn</span>
-                    <p>Minimalist productivity for focused minds.</p>
-                </div>
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>Product</h4>
-                        <a href="#features">Features</a>
-                        <a href="development.html">Development</a>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Connect</h4>
-                        <a href="#contact">Contact</a>
-                        <a href="https://github.com/tufn">GitHub</a>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Legal</h4>
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms of Service</a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Tufn. All rights reserved.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="https://github.com/tufn"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-discord"></i></a>
-                </div>
-            </div>
+            <p>&copy; 2026 Tufn. All rights reserved.</p>
         </div>
     </footer>
-    <script src="script.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const faqSchema = {
-                "@context": "https://schema.org",
-                "@type": "FAQPage",
-                "mainEntity": [
-                    {
-                        "@type": "Question",
-                        "name": "What is Tufn?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "Tufn is a minimalist all-in-one productivity app that combines notes, tasks, digital canvas, and calendar in one elegant interface designed for maximum focus."
-                        }
-                    },
-                    {
-                        "@type": "Question",
-                        "name": "When will Tufn launch?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "Tufn is currently in development with 63% progress and estimated to launch in 2027. Join our waitlist to get early access."
-                        }
-                    },
-                    {
-                        "@type": "Question",
-                        "name": "What makes Tufn different?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "Unlike other productivity tools, Tufn offers a truly minimalist interface with integrated digital canvas for brainstorming, all while maintaining focus on essential features."
-                        }
-                    },
-                    {
-                        "@type": "Question",
-                        "name": "Is Tufn free?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "Tufn will offer a free version with core features and optional premium upgrades for advanced functionality."
-                        }
-                    },
-                    {
-                        "@type": "Question",
-                        "name": "What platforms will Tufn support?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "Tufn will be available on Web, iOS, and Android with full cloud synchronization across all devices."
-                        }
-                    },
-                    {
-                        "@type": "Question",
-                        "name": "Can I try Tufn now?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "While in development, you can join our waitlist to get updates and be among the first to try Tufn when it launches."
-                        }
-                    }
-                ]
-            };
-            const script = document.createElement('script');
-            script.type = 'application/ld+json';
-            script.text = JSON.stringify(faqSchema);
-            document.head.appendChild(script);
-        });
+        const supabase = supabase.createClient(
+            "https://hadkdtctdwwoucpyonob.supabase.co",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhhZGtkdGN0ZHd3b3VjcHlvbm9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MjQyODYsImV4cCI6MjA4NjMwMDI4Nn0.hchfw9-mNT6qi5Ctbjwm7XcNT1QvzfjqoJ21kXBTHAg"
+        );
     </script>
+    <script src="script.js"></script>
 </body>
 </html>
