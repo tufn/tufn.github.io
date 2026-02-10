@@ -7,7 +7,18 @@ const SUPABASE_URL = "https://hadkdtctdwwoucpyonob.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhhZGtkdGN0ZHd3b3VjcHlvbm9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MjQyODYsImV4cCI6MjA4NjMwMDI4Nn0.hchfw9-mNT6qi5Ctbjwm7XcNT1QvzfjqoJ21kXBTHAg";
 
 // Initialize Supabase Client
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let supabaseClient;
+
+// Wait for Supabase library to load
+const initSupabase = () => {
+  if (typeof window.supabase !== 'undefined') {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('Supabase initialized successfully');
+    return true;
+  }
+  console.error('Supabase library not loaded');
+  return false;
+};
 
 // ==========================================
 // DOM Elements
@@ -139,6 +150,14 @@ const showToast = (message, type = 'info') => {
 // Waitlist Functions
 // ==========================================
 const updateWaitlistCount = async () => {
+  if (!supabaseClient) {
+    console.log('Supabase not initialized yet');
+    if (elements.waitlistCountEl) {
+      elements.waitlistCountEl.textContent = '0';
+    }
+    return;
+  }
+  
   try {
     const { count, error } = await supabaseClient
       .from('waitlist')
@@ -147,7 +166,7 @@ const updateWaitlistCount = async () => {
     if (error) {
       console.error('Error fetching waitlist count:', error);
       if (elements.waitlistCountEl) {
-        elements.waitlistCountEl.textContent = '...';
+        elements.waitlistCountEl.textContent = '0';
       }
       return;
     }
@@ -158,7 +177,7 @@ const updateWaitlistCount = async () => {
   } catch (error) {
     console.error('Waitlist count error:', error);
     if (elements.waitlistCountEl) {
-      elements.waitlistCountEl.textContent = '...';
+      elements.waitlistCountEl.textContent = '0';
     }
   }
 };
@@ -181,7 +200,12 @@ const animateNumber = (element, target) => {
 };
 
 const initWaitlist = () => {
-  if (!elements.joinBtn) return;
+  console.log('Initializing waitlist...');
+  
+  if (!elements.joinBtn) {
+    console.error('Join button not found');
+    return;
+  }
   
   // Check if user already joined
   if (localStorage.getItem('waitlist_joined')) {
@@ -193,112 +217,137 @@ const initWaitlist = () => {
       elements.newsletterBtn.disabled = true;
       elements.newsletterBtn.innerHTML = '<i class="fas fa-check"></i> Already subscribed';
     }
+    return;
   }
   
-  // Join button click
-  const openModal = () => {
-    if (elements.waitlistModal) {
-      elements.waitlistModal.classList.add('active');
-      setTimeout(() => {
-        elements.waitlistEmail?.focus();
-      }, 100);
+  // Join button click - open modal
+  const openModal = (e) => {
+    e.preventDefault();
+    console.log('Opening waitlist modal...');
+    
+    if (!elements.waitlistModal) {
+      console.error('Waitlist modal not found');
+      return;
     }
+    
+    elements.waitlistModal.classList.add('active');
+    setTimeout(() => {
+      elements.waitlistEmail?.focus();
+    }, 100);
   };
   
-  elements.joinBtn?.addEventListener('click', openModal);
-  elements.newsletterBtn?.addEventListener('click', openModal);
+  elements.joinBtn.addEventListener('click', openModal);
+  console.log('Join button listener added');
+  
+  if (elements.newsletterBtn) {
+    elements.newsletterBtn.addEventListener('click', openModal);
+    console.log('Newsletter button listener added');
+  }
   
   // Form submission
-  elements.waitlistForm?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    // Rate limiting
-    const now = Date.now();
-    if (now - security.lastRequest < 2000) {
-      showToast('Please wait before trying again', 'warning');
-      return;
-    }
-    security.lastRequest = now;
-    
-    const rateLimitKey = `waitlist_${getFingerprint()}`;
-    if (!security.checkRateLimit(rateLimitKey, 3, 30000)) {
-      showToast('Too many requests. Please wait before trying again.', 'error');
-      return;
-    }
-    
-    // Get and validate email
-    const email = elements.waitlistEmail.value.trim();
-    if (!email) {
-      elements.emailError.textContent = 'Email is required';
-      elements.waitlistEmail.focus();
-      return;
-    }
-    
-    if (!security.validateEmail(email)) {
-      elements.emailError.textContent = 'Please enter a valid email address';
-      elements.waitlistEmail.focus();
-      return;
-    }
-    
-    // Clear previous errors
-    elements.emailError.textContent = '';
-    
-    // Disable submit button
-    elements.submitWaitlist.disabled = true;
-    elements.submitWaitlist.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Joining...';
-    
-    try {
-      const fp = security.sanitizeInput(getFingerprint());
-      const sanitizedEmail = security.sanitizeInput(email);
+  if (elements.waitlistForm) {
+    elements.waitlistForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      console.log('Form submitted');
       
-      // Insert into Supabase
-      const { data, error } = await supabaseClient
-        .from('waitlist')
-        .insert({
-          fingerprint: fp,
-          email: sanitizedEmail,
-          created_at: new Date().toISOString()
-        })
-        .select();
-      
-      if (error) {
-        // Check if duplicate
-        if (error.code === '23505') {
-          throw new Error('This email is already on the waitlist');
-        }
-        throw error;
+      if (!supabaseClient) {
+        showToast('Service not ready. Please try again in a moment.', 'error');
+        return;
       }
       
-      // Success
-      localStorage.setItem('waitlist_joined', 'true');
-      elements.waitlistEmail.value = '';
-      elements.successMessage.style.display = 'block';
+      // Rate limiting
+      const now = Date.now();
+      if (now - security.lastRequest < 2000) {
+        showToast('Please wait before trying again', 'warning');
+        return;
+      }
+      security.lastRequest = now;
       
-      setTimeout(() => {
-        elements.waitlistModal.classList.remove('active');
-        elements.successMessage.style.display = 'none';
-        elements.joinBtn.disabled = true;
-        elements.joinBtn.innerHTML = '<i class="fas fa-check"></i> You\'re on the waitlist!';
-        elements.joinBtn.classList.remove('pulse');
+      const rateLimitKey = `waitlist_${getFingerprint()}`;
+      if (!security.checkRateLimit(rateLimitKey, 3, 30000)) {
+        showToast('Too many requests. Please wait before trying again.', 'error');
+        return;
+      }
+      
+      // Get and validate email
+      const email = elements.waitlistEmail.value.trim();
+      if (!email) {
+        elements.emailError.textContent = 'Email is required';
+        elements.waitlistEmail.focus();
+        return;
+      }
+      
+      if (!security.validateEmail(email)) {
+        elements.emailError.textContent = 'Please enter a valid email address';
+        elements.waitlistEmail.focus();
+        return;
+      }
+      
+      // Clear previous errors
+      elements.emailError.textContent = '';
+      
+      // Disable submit button
+      elements.submitWaitlist.disabled = true;
+      elements.submitWaitlist.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Joining...';
+      
+      try {
+        const fp = security.sanitizeInput(getFingerprint());
+        const sanitizedEmail = security.sanitizeInput(email);
         
-        if (elements.newsletterBtn) {
-          elements.newsletterBtn.disabled = true;
-          elements.newsletterBtn.innerHTML = '<i class="fas fa-check"></i> Already subscribed';
+        console.log('Inserting into waitlist...');
+        
+        // Insert into Supabase
+        const { data, error } = await supabaseClient
+          .from('waitlist')
+          .insert({
+            fingerprint: fp,
+            email: sanitizedEmail,
+            created_at: new Date().toISOString()
+          })
+          .select();
+        
+        if (error) {
+          console.error('Supabase error:', error);
+          // Check if duplicate
+          if (error.code === '23505' || error.message.includes('duplicate')) {
+            throw new Error('This email is already on the waitlist');
+          }
+          throw error;
         }
-      }, 2000);
-      
-      updateWaitlistCount();
-      showToast('Successfully joined the waitlist!', 'success');
-      
-    } catch (error) {
-      console.error('Waitlist submission error:', error);
-      elements.emailError.textContent = error.message || 'Failed to join waitlist. Please try again.';
-      showToast(error.message || 'Failed to join waitlist', 'error');
-    } finally {
-      elements.submitWaitlist.disabled = false;
-      elements.submitWaitlist.innerHTML = '<i class="fas fa-paper-plane"></i> Join Waitlist';
-    }
-  });
+        
+        console.log('Successfully added to waitlist:', data);
+        
+        // Success
+        localStorage.setItem('waitlist_joined', 'true');
+        elements.waitlistEmail.value = '';
+        elements.successMessage.style.display = 'block';
+        
+        setTimeout(() => {
+          elements.waitlistModal.classList.remove('active');
+          elements.successMessage.style.display = 'none';
+          elements.joinBtn.disabled = true;
+          elements.joinBtn.innerHTML = '<i class="fas fa-check"></i> You\'re on the waitlist!';
+          elements.joinBtn.classList.remove('pulse');
+          
+          if (elements.newsletterBtn) {
+            elements.newsletterBtn.disabled = true;
+            elements.newsletterBtn.innerHTML = '<i class="fas fa-check"></i> Already subscribed';
+          }
+        }, 2000);
+        
+        updateWaitlistCount();
+        showToast('Successfully joined the waitlist!', 'success');
+        
+      } catch (error) {
+        console.error('Waitlist submission error:', error);
+        elements.emailError.textContent = error.message || 'Failed to join waitlist. Please try again.';
+        showToast(error.message || 'Failed to join waitlist', 'error');
+      } finally {
+        elements.submitWaitlist.disabled = false;
+        elements.submitWaitlist.innerHTML = '<i class="fas fa-paper-plane"></i> Join Waitlist';
+      }
+    });
+  }
 };
 
 // ==========================================
@@ -690,6 +739,11 @@ const cleanupRateLimits = () => {
 // Initialize Everything
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOM Content Loaded');
+  
+  // Initialize Supabase first
+  initSupabase();
+  
   // Initialize all features
   initTheme();
   initMobileMenu();
@@ -707,10 +761,14 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(updateClock, 60000);
   
   // Update waitlist count
-  updateWaitlistCount();
+  setTimeout(() => {
+    updateWaitlistCount();
+  }, 500);
   
   // Cleanup rate limits periodically
   setInterval(cleanupRateLimits, 300000);
+  
+  console.log('All initialization complete');
 });
 
 // Cleanup on page unload
