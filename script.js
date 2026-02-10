@@ -1,326 +1,256 @@
-// DOM Elements
-const themeToggle = document.getElementById('theme-toggle');
-const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-const navLinks = document.querySelector('.nav-links');
-const downloadModal = document.getElementById('download-modal');
-const downloadBtns = document.querySelectorAll('.download-btn');
-const modalCloseBtns = document.querySelectorAll('.modal-close, .modal-close-btn');
-const downloadMessage = document.getElementById('download-message');
-const manualDownloadLink = document.getElementById('manual-download-link');
-const installSteps = document.querySelectorAll('#step1, #step2, #step3');
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabase = supabase.createClient(
+  "https://hadkdtctdwwoucpyonob.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhhZGtkdGN0ZHd3b3VjcHlvbm9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MjQyODYsImV4cCI6MjA4NjMwMDI4Nn0.hchfw9-mNT6qi5Ctbjwm7XcNT1QvzfjqoJ21kXBTHAg"
+)
 
-// App Preview Elements
-const appTabs = document.querySelectorAll('.app-tab');
-const tabContents = document.querySelectorAll('.tab-content');
-const currentTimeEl = document.getElementById('current-time');
-const calendarDays = document.querySelector('.calendar-days');
 
-// Theme Toggle
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-theme');
-    const icon = themeToggle.querySelector('i');
-    if (document.body.classList.contains('dark-theme')) {
-        icon.className = 'fas fa-sun';
-        localStorage.setItem('theme', 'dark');
-    } else {
-        icon.className = 'fas fa-moon';
-        localStorage.setItem('theme', 'light');
-    }
-});
+const elements = {
+    themeToggle: document.getElementById('theme-toggle'),
+    mobileMenuBtn: document.querySelector('.mobile-menu-btn'),
+    navLinks: document.querySelector('.nav-links'),
+    downloadModal: document.getElementById('download-modal'),
+    downloadBtns: document.querySelectorAll('.download-btn'),
+    modalCloseBtns: document.querySelectorAll('.modal-close, .modal-close-btn'),
+    currentTimeEl: document.getElementById('current-time'),
+    calendarDays: document.querySelector('.calendar-days'),
+    joinBtn: document.getElementById('join-waitlist'),
+    waitlistCountEl: document.getElementById('waitlist-count'),
+    appTabs: document.querySelectorAll('.app-tab'),
+    tabContents: document.querySelectorAll('.tab-content')
+};
 
-// Load saved theme
-if (localStorage.getItem('theme') === 'dark') {
-    document.body.classList.add('dark-theme');
-    themeToggle.querySelector('i').className = 'fas fa-sun';
-}
-
-// Mobile Menu
-if (mobileMenuBtn && navLinks) {
-    mobileMenuBtn.addEventListener('click', () => {
-        navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-    });
+const security = {
+    rateLimits: new Map(),
+    lastRequest: 0,
     
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 768) {
-            navLinks.style.display = '';
+    sanitizeInput: (input) => {
+        if (typeof input !== 'string') return input;
+        return input
+            .replace(/[<>]/g, '')
+            .replace(/javascript:/gi, '')
+            .replace(/on\w+=/gi, '')
+            .trim()
+            .substring(0, 500);
+    },
+    
+    sanitizeHTML: (html) => {
+        const div = document.createElement('div');
+        div.textContent = html;
+        return div.innerHTML;
+    },
+    
+    checkRateLimit: (key, limit = 5, windowMs = 60000) => {
+        const now = Date.now();
+        const requests = security.rateLimits.get(key) || [];
+        const recent = requests.filter(time => now - time < windowMs);
+        
+        if (recent.length >= limit) {
+            return false;
         }
-    });
-}
+        
+        recent.push(now);
+        security.rateLimits.set(key, recent);
+        return true;
+    },
+    
+    validateFingerprint: (fp) => {
+        return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(fp);
+    }
+};
 
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            if (navLinks && window.innerWidth <= 768) {
-                navLinks.style.display = 'none';
-            }
-            
-            window.scrollTo({
-                top: targetElement.offsetTop - 80,
-                behavior: 'smooth'
-            });
+const fingerprint = () => {
+    let fp = localStorage.getItem('fp');
+    if (!fp || !security.validateFingerprint(fp)) {
+        fp = crypto.randomUUID();
+        localStorage.setItem('fp', fp);
+    }
+    return fp;
+};
+
+const updateWaitlist = async () => {
+    try {
+        const { data, error } = await supabase.rpc('waitlist_count');
+        if (error) throw error;
+        if (elements.waitlistCountEl && typeof data === 'number') {
+            elements.waitlistCountEl.textContent = `${security.sanitizeHTML(data.toString())} Waitlist Signups`;
         }
-    });
-});
+    } catch (error) {
+        console.error('Waitlist count error:', error);
+    }
+};
 
-// App Preview Tabs
-appTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-        // Remove active class from all tabs and contents
-        appTabs.forEach(t => t.classList.remove('active'));
-        tabContents.forEach(c => c.classList.remove('active'));
+const initWaitlist = async () => {
+    if (!elements.joinBtn) return;
+    
+    if (localStorage.getItem('waitlist_joined')) {
+        elements.joinBtn.disabled = true;
+        elements.joinBtn.textContent = "You're on the waitlist ✓";
+        updateWaitlist();
+        return;
+    }
+    
+    elements.joinBtn.addEventListener('click', async () => {
+        const now = Date.now();
+        if (now - security.lastRequest < 2000) return;
+        security.lastRequest = now;
         
-        // Add active class to clicked tab
-        tab.classList.add('active');
-        
-        // Show corresponding content
-        const tabId = tab.getAttribute('data-tab');
-        const content = document.getElementById(`${tabId}-tab`);
-        if (content) {
-            content.classList.add('active');
-        }
-    });
-});
-
-// Update real-time clock
-function updateClock() {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    if (currentTimeEl) {
-        currentTimeEl.textContent = `${hours}:${minutes}`;
-    }
-}
-
-// Initialize calendar
-function initCalendar() {
-    if (!calendarDays) return;
-    
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const daysInMonth = lastDay.getDate();
-    const startingDay = firstDay.getDay();
-    
-    // Adjust starting day for Monday-first week
-    const adjustedStartingDay = startingDay === 0 ? 6 : startingDay - 1;
-    
-    let calendarHTML = '';
-    
-    // Previous month days
-    const prevMonthLastDay = new Date(year, month, 0).getDate();
-    for (let i = 0; i < adjustedStartingDay; i++) {
-        const day = prevMonthLastDay - adjustedStartingDay + i + 1;
-        calendarHTML += `<div class="calendar-day prev-month">${day}</div>`;
-    }
-    
-    // Current month days
-    for (let day = 1; day <= daysInMonth; day++) {
-        const isToday = day === today.getDate() && month === today.getMonth();
-        const className = isToday ? 'calendar-day today' : 'calendar-day';
-        calendarHTML += `<div class="${className}">${day}</div>`;
-    }
-    
-    // Next month days
-    const totalCells = 42; // 6 weeks
-    const remainingCells = totalCells - (adjustedStartingDay + daysInMonth);
-    for (let day = 1; day <= remainingCells; day++) {
-        calendarHTML += `<div class="calendar-day next-month">${day}</div>`;
-    }
-    
-    calendarDays.innerHTML = calendarHTML;
-    
-    // Update current month display
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
-                       'July', 'August', 'September', 'October', 'November', 'December'];
-    const currentMonthEl = document.querySelector('.current-month');
-    if (currentMonthEl) {
-        currentMonthEl.textContent = `${monthNames[month]} ${year}`;
-    }
-}
-
-// Download functionality
-downloadBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const os = btn.getAttribute('data-os');
-        showDownloadModal(os);
-    });
-});
-
-function showDownloadModal(os) {
-    // Update modal content based on OS
-    let downloadUrl, fileName, osName, instructions;
-    
-    switch(os) {
-        case 'windows':
-            downloadUrl = '/downloads/tufn-windows.exe';
-            fileName = 'tufn-windows.exe';
-            osName = 'Windows';
-            instructions = [
-                'Run the downloaded tufn-windows.exe file',
-                'Follow the setup wizard instructions',
-                'Launch Tufn from Start Menu or desktop shortcut'
-            ];
-            break;
-        case 'macos':
-            downloadUrl = '/downloads/tufn-macos.dmg';
-            fileName = 'tufn-macos.dmg';
-            osName = 'macOS';
-            instructions = [
-                'Open the downloaded tufn-macos.dmg file',
-                'Drag Tufn.app to the Applications folder',
-                'Launch Tufn from Applications or Launchpad'
-            ];
-            break;
-        case 'linux':
-            downloadUrl = '/downloads/tufn-linux.deb';
-            fileName = 'tufn-linux.deb';
-            osName = 'Linux';
-            instructions = [
-                'Double-click the downloaded .deb file',
-                'Install using your package manager',
-                'Launch Tufn from applications menu or terminal'
-            ];
-            break;
-        default:
+        const rateLimitKey = `waitlist_${fingerprint()}`;
+        if (!security.checkRateLimit(rateLimitKey, 3, 30000)) {
+            alert('Please wait before trying again');
             return;
-    }
-    
-    // Update modal content
-    downloadMessage.textContent = `Downloading Tufn for ${osName}...`;
-    manualDownloadLink.href = downloadUrl;
-    manualDownloadLink.textContent = `download ${fileName}`;
-    
-    // Update installation steps
-    installSteps.forEach((step, index) => {
-        if (instructions[index]) {
-            step.textContent = instructions[index];
+        }
+        
+        try {
+            const fp = security.sanitizeInput(fingerprint());
+            const { error } = await supabase
+                .from('waitlist')
+                .insert({ 
+                    fingerprint: fp,
+                    created_at: new Date().toISOString()
+                });
+            
+            if (error) throw error;
+            
+            localStorage.setItem('waitlist_joined', 'true');
+            elements.joinBtn.disabled = true;
+            elements.joinBtn.textContent = "You're on the waitlist ✓";
+            updateWaitlist();
+        } catch (error) {
+            console.error('Waitlist error:', error);
+            alert('Failed to join waitlist. Please try again.');
         }
     });
-    
-    // Show modal
-    downloadModal.classList.add('active');
-    
-    // Start download after a brief delay
-    setTimeout(() => {
-        simulateDownload(fileName, osName);
-    }, 1000);
-}
+};
 
-function simulateDownload(fileName, osName) {
-    // In a real implementation, this would trigger an actual download
-    // For demo purposes, we'll just update the message
-    downloadMessage.innerHTML = `
-        Download complete! <br>
-        <small>File: ${fileName}</small><br><br>
-        If the download didn't start, <a href="#" id="manual-download" data-file="${fileName}">click here to download manually</a>.
-    `;
+if (elements.themeToggle) {
+    elements.themeToggle.addEventListener('click', () => {
+        const icon = elements.themeToggle.querySelector('i');
+        const isDark = document.body.classList.toggle('dark-theme');
+        icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
     
-    // Add event listener for manual download link
-    const manualLink = document.getElementById('manual-download');
-    if (manualLink) {
-        manualLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            // In a real implementation, this would trigger the download
-            alert(`In a real implementation, this would download ${fileName}`);
-        });
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-theme');
+        elements.themeToggle.querySelector('i').className = 'fas fa-sun';
     }
 }
 
-// Close modal
-modalCloseBtns.forEach(btn => {
+if (elements.mobileMenuBtn) {
+    elements.mobileMenuBtn.addEventListener('click', () => {
+        elements.navLinks.style.display = 
+            elements.navLinks.style.display === 'flex' ? 'none' : 'flex';
+    });
+}
+
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && elements.navLinks) {
+        elements.navLinks.style.display = '';
+    }
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', e => {
+        e.preventDefault();
+        const targetId = security.sanitizeInput(anchor.getAttribute('href'));
+        const target = document.querySelector(targetId);
+        if (!target) return;
+        
+        if (elements.navLinks && window.innerWidth <= 768) {
+            elements.navLinks.style.display = 'none';
+        }
+        
+        window.scrollTo({
+            top: target.offsetTop - 80,
+            behavior: 'smooth'
+        });
+    });
+});
+
+elements.appTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        const tabId = security.sanitizeInput(tab.dataset.tab);
+        elements.appTabs.forEach(t => t.classList.remove('active'));
+        elements.tabContents.forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(`${tabId}-tab`)?.classList.add('active');
+    });
+});
+
+const updateClock = () => {
+    const now = new Date();
+    if (elements.currentTimeEl) {
+        elements.currentTimeEl.textContent = 
+            `${now.getHours().toString().padStart(2, '0')}:` +
+            `${now.getMinutes().toString().padStart(2, '0')}`;
+    }
+};
+
+const initCalendar = () => {
+    if (!elements.calendarDays) return;
+    
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const firstDay = new Date(year, month, 1).getDay() || 7;
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    
+    let html = '';
+    for (let i = 1 - (firstDay - 1); i <= 42 - (firstDay - 1); i++) {
+        const isOther = i < 1 || i > daysInMonth;
+        const isToday = i === now.getDate();
+        const className = isOther ? 'calendar-day other' : 
+                         isToday ? 'calendar-day today' : 'calendar-day';
+        const dayNum = isOther ? ((i + daysInMonth - 1) % daysInMonth) + 1 : i;
+        html += `<div class="${security.sanitizeHTML(className)}">` +
+                security.sanitizeHTML(dayNum.toString()) + '</div>';
+    }
+    elements.calendarDays.innerHTML = html;
+};
+
+elements.downloadBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-        downloadModal.classList.remove('active');
+        if (!security.checkRateLimit('download_modal', 10, 60000)) return;
+        elements.downloadModal.classList.add('active');
     });
 });
 
-downloadModal.addEventListener('click', (e) => {
-    if (e.target === downloadModal) {
-        downloadModal.classList.remove('active');
-    }
+elements.modalCloseBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        elements.downloadModal.classList.remove('active');
+    });
 });
 
-// Task interactions
-document.addEventListener('click', (e) => {
-    // Task completion
-    if (e.target.closest('.task-checkbox label')) {
-        const checkbox = e.target.closest('.task-checkbox').querySelector('input[type="checkbox"]');
-        checkbox.checked = !checkbox.checked;
-        e.target.closest('.task-item').classList.toggle('completed');
-    }
-    
-    // New note button
-    if (e.target.closest('.new-note-btn')) {
-        alert('In the actual app, this would open a new note editor.');
-    }
-    
-    // Add task button
-    if (e.target.closest('.add-task button')) {
-        const input = e.target.closest('.add-task').querySelector('input');
-        if (input.value.trim()) {
-            alert(`In the actual app, this would add task: "${input.value}"`);
-            input.value = '';
+if (elements.downloadModal) {
+    elements.downloadModal.addEventListener('click', e => {
+        if (e.target === elements.downloadModal) {
+            elements.downloadModal.classList.remove('active');
         }
-    }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateClock();
+    setInterval(updateClock, 60000);
+    initCalendar();
+    initWaitlist();
+    
+    setInterval(() => {
+        const now = Date.now();
+        for (const [key, times] of security.rateLimits) {
+            const validTimes = times.filter(time => now - time < 600000);
+            if (validTimes.length === 0) {
+                security.rateLimits.delete(key);
+            } else {
+                security.rateLimits.set(key, validTimes);
+            }
+        }
+    }, 300000);
 });
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize clock
-    updateClock();
-    setInterval(updateClock, 60000); // Update every minute
-    
-    // Initialize calendar
-    initCalendar();
-    
-    // Add some interactivity to canvas tools
-    const canvasTools = document.querySelectorAll('.canvas-tool');
-    canvasTools.forEach(tool => {
-        tool.addEventListener('click', () => {
-            canvasTools.forEach(t => t.classList.remove('active'));
-            tool.classList.add('active');
-        });
-    });
-    
-    // Add filter functionality
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        });
-    });
-    
-    // Calendar navigation
-    const calendarNav = document.querySelector('.calendar-nav');
-    if (calendarNav) {
-        calendarNav.addEventListener('click', (e) => {
-            if (e.target.closest('button')) {
-                // In a real implementation, this would change the calendar month
-                alert('In the actual app, this would navigate to the previous/next month.');
-            }
-        });
-    }
-    
-    // Make app preview cards interactive
-    const previewCards = document.querySelectorAll('.preview-card');
-    previewCards.forEach(card => {
-        card.addEventListener('click', () => {
-            if (card.classList.contains('card-4')) {
-                // Quick note card
-                const noteText = prompt('Enter your quick note:');
-                if (noteText) {
-                    card.querySelector('.note-preview').textContent = noteText;
-                }
-            }
-        });
-    });
+window.addEventListener('beforeunload', () => {
+    security.rateLimits.clear();
 });
+</script>
