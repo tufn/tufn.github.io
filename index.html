@@ -23,9 +23,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <button id="theme-toggle" class="theme-toggle">
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
         <i class="fas fa-moon"></i>
     </button>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-top" class="scroll-top" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Header -->
     <header class="header">
         <nav class="nav container">
             <div class="nav-logo">
@@ -34,38 +42,48 @@
             </div>
             <div class="nav-links">
                 <a href="#features">Features</a>
+                <a href="#roadmap">Roadmap</a>
+                <a href="#faq">FAQ</a>
                 <a href="development.html">Development</a>
                 <a href="#contact">Contact</a>
             </div>
-            <button class="mobile-menu-btn">
+            <button class="mobile-menu-btn" aria-label="Toggle mobile menu">
                 <i class="fas fa-bars"></i>
             </button>
         </nav>
     </header>
+
     <main>
+        <!-- Hero Section -->
         <section class="hero">
             <div class="container">
                 <div class="hero-content">
+                    <div class="badge">
+                        <i class="fas fa-rocket"></i>
+                        <span>Coming 2027</span>
+                    </div>
                     <h1 class="hero-title">minimalist productivity,<br>maximal focus</h1>
-                    <p class="hero-subtitle">An all-in-one app for notes, tasks, canvas, and calendar in one elegant interface.</p>
+                    <p class="hero-subtitle">An all-in-one app for notes, tasks, canvas, and calendar in one elegant interface. Work smarter, not harder.</p>
                     <div class="hero-buttons">
-                        <a href="development.html" class="btn btn-primary">
-                            <i class="fas fa-code"></i> View Development Status
-                        </a>
-                        <button class="btn btn-secondary" id="join-waitlist">
+                        <button class="btn btn-primary pulse" id="join-waitlist">
                             <i class="fas fa-paper-plane"></i> Join Waitlist
                         </button>
-                        <div class="waitlist-counter">
-                            <span class="stat-number" id="waitlist-count">0</span>
-                            <span class="stat-label">Waitlist Signups</span>
+                        <a href="development.html" class="btn btn-secondary">
+                            <i class="fas fa-code"></i> View Progress
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number" id="waitlist-count">...</span>
+                            <span class="stat-label">People Waiting</span>
                         </div>
                         <div class="stat">
                             <span class="stat-number">63%</span>
-                            <span class="stat-label">Development Progress</span>
+                            <span class="stat-label">Development</span>
                         </div>
                         <div class="stat">
                             <span class="stat-number">2027</span>
-                            <span class="stat-label">Estimated Launch</span>
+                            <span class="stat-label">Launch Year</span>
                         </div>
                     </div>
                 </div>
@@ -73,24 +91,31 @@
                     <div class="app-preview">
                         <div class="app-tabs">
                             <button class="app-tab active" data-tab="dashboard">
-                                <i class="fas fa-chart-pie"></i> Dashboard
-                            </button>
-                            <button class="app-tab" data-tab="canvas">
-                                <i class="fas fa-paint-brush"></i> Canvas
+                                <i class="fas fa-chart-pie"></i> 
+                                <span>Dashboard</span>
                             </button>
                             <button class="app-tab" data-tab="notes">
-                                <i class="fas fa-sticky-note"></i> Notes
+                                <i class="fas fa-sticky-note"></i> 
+                                <span>Notes</span>
                             </button>
                             <button class="app-tab" data-tab="tasks">
-                                <i class="fas fa-tasks"></i> Tasks
+                                <i class="fas fa-tasks"></i> 
+                                <span>Tasks</span>
+                            </button>
+                            <button class="app-tab" data-tab="canvas">
+                                <i class="fas fa-paint-brush"></i> 
+                                <span>Canvas</span>
                             </button>
                             <button class="app-tab" data-tab="calendar">
-                                <i class="fas fa-calendar-alt"></i> Calendar
+                                <i class="fas fa-calendar-alt"></i> 
+                                <span>Calendar</span>
                             </button>
                         </div>
                         <div class="app-content">
+                            <!-- Dashboard Tab -->
                             <div class="tab-content active" id="dashboard-tab">
                                 <div class="time-display" id="current-time">00:00</div>
+                                <div class="date-display" id="current-date"></div>
                                 <div class="dashboard-grid">
                                     <div class="preview-card card-1">
                                         <div class="card-header">
@@ -148,13 +173,94 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Notes Tab -->
+                            <div class="tab-content" id="notes-tab">
+                                <div class="notes-container">
+                                    <div class="notes-header">
+                                        <h3><i class="fas fa-sticky-note"></i> My Notes</h3>
+                                        <button class="btn-small">+ New Note</button>
+                                    </div>
+                                    <div class="notes-list">
+                                        <div class="note-item">
+                                            <h4>Meeting Notes</h4>
+                                            <p>Discussed project timeline and deliverables...</p>
+                                            <span class="note-date">2 hours ago</span>
+                                        </div>
+                                        <div class="note-item">
+                                            <h4>Ideas & Inspiration</h4>
+                                            <p>New feature ideas for the app redesign...</p>
+                                            <span class="note-date">Yesterday</span>
+                                        </div>
+                                        <div class="note-item">
+                                            <h4>Research Notes</h4>
+                                            <p>Competitive analysis findings...</p>
+                                            <span class="note-date">3 days ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tasks Tab -->
+                            <div class="tab-content" id="tasks-tab">
+                                <div class="tasks-container">
+                                    <div class="tasks-header">
+                                        <h3><i class="fas fa-tasks"></i> Task Manager</h3>
+                                        <div class="task-filters">
+                                            <button class="filter-btn active">All</button>
+                                            <button class="filter-btn">Today</button>
+                                            <button class="filter-btn">Upcoming</button>
+                                        </div>
+                                    </div>
+                                    <div class="tasks-list">
+                                        <div class="task-group">
+                                            <h4>High Priority</h4>
+                                            <div class="task-item priority-high">
+                                                <span class="task-check"></span>
+                                                <span class="task-text">Complete presentation</span>
+                                                <span class="task-badge">Due today</span>
+                                            </div>
+                                        </div>
+                                        <div class="task-group">
+                                            <h4>Medium Priority</h4>
+                                            <div class="task-item priority-medium completed">
+                                                <span class="task-check"><i class="fas fa-check"></i></span>
+                                                <span class="task-text">Review documentation</span>
+                                            </div>
+                                            <div class="task-item priority-medium">
+                                                <span class="task-check"></span>
+                                                <span class="task-text">Update website</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Canvas Tab -->
+                            <div class="tab-content" id="canvas-tab">
+                                <div class="canvas-container">
+                                    <div class="canvas-toolbar">
+                                        <button class="tool-btn active" data-tool="pen"><i class="fas fa-pen"></i></button>
+                                        <button class="tool-btn" data-tool="eraser"><i class="fas fa-eraser"></i></button>
+                                        <button class="tool-btn" data-tool="shapes"><i class="fas fa-shapes"></i></button>
+                                        <button class="tool-btn" data-tool="text"><i class="fas fa-font"></i></button>
+                                        <div class="color-picker">
+                                            <input type="color" value="#6366f1" id="canvas-color">
+                                        </div>
+                                    </div>
+                                    <canvas id="drawing-canvas" width="600" height="400"></canvas>
+                                    <p class="canvas-hint">Click and drag to draw • Use toolbar to change tools</p>
+                                </div>
+                            </div>
+
+                            <!-- Calendar Tab -->
                             <div class="tab-content" id="calendar-tab">
                                 <div class="calendar-header">
                                     <h3><i class="fas fa-calendar-alt"></i> Calendar</h3>
                                     <div class="calendar-nav">
-                                        <button><i class="fas fa-chevron-left"></i></button>
+                                        <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
                                         <span class="current-month"></span>
-                                        <button><i class="fas fa-chevron-right"></i></button>
+                                        <button id="next-month"><i class="fas fa-chevron-right"></i></button>
                                     </div>
                                 </div>
                                 <div class="calendar-grid">
@@ -169,6 +275,8 @@
                 </div>
             </div>
         </section>
+
+        <!-- Features Section -->
         <section id="features" class="features">
             <div class="container">
                 <h2 class="section-title">Everything you need, nothing you don't</h2>
@@ -180,6 +288,11 @@
                         </div>
                         <h3>Smart Notes</h3>
                         <p>Markdown support, tags, search, and elegant organization. Your thoughts, perfectly captured.</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Rich text editing</li>
+                            <li><i class="fas fa-check"></i> Tags & folders</li>
+                            <li><i class="fas fa-check"></i> Quick search</li>
+                        </ul>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
@@ -187,6 +300,11 @@
                         </div>
                         <h3>Task Management</h3>
                         <p>Priority levels, due dates, and smart filtering. Stay on top of what matters.</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Priority levels</li>
+                            <li><i class="fas fa-check"></i> Due dates & reminders</li>
+                            <li><i class="fas fa-check"></i> Smart filters</li>
+                        </ul>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
@@ -194,6 +312,11 @@
                         </div>
                         <h3>Digital Canvas</h3>
                         <p>Draw, sketch, annotate. Perfect for brainstorming and visual thinking.</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Drawing tools</li>
+                            <li><i class="fas fa-check"></i> Shapes & text</li>
+                            <li><i class="fas fa-check"></i> Export & share</li>
+                        </ul>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
@@ -201,6 +324,11 @@
                         </div>
                         <h3>Calendar & Events</h3>
                         <p>Monthly/weekly views with event management. Never miss important dates.</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Multiple views</li>
+                            <li><i class="fas fa-check"></i> Event management</li>
+                            <li><i class="fas fa-check"></i> Sync across devices</li>
+                        </ul>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
@@ -208,6 +336,11 @@
                         </div>
                         <h3>Cloud Sync</h3>
                         <p>Automatic backup and sync across devices. Your data, always secure.</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Real-time sync</li>
+                            <li><i class="fas fa-check"></i> Encrypted backup</li>
+                            <li><i class="fas fa-check"></i> Offline mode</li>
+                        </ul>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
@@ -215,77 +348,225 @@
                         </div>
                         <h3>Focus Mode</h3>
                         <p>Distraction-free interface. Work without interruptions.</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Minimal UI</li>
+                            <li><i class="fas fa-check"></i> Pomodoro timer</li>
+                            <li><i class="fas fa-check"></i> Do not disturb</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </section>
-        <section class="faq">
+
+        <!-- Roadmap Section -->
+        <section id="roadmap" class="roadmap">
+            <div class="container">
+                <h2 class="section-title">Development Roadmap</h2>
+                <p class="section-subtitle">Track our journey to launch</p>
+                <div class="roadmap-timeline">
+                    <div class="roadmap-item completed">
+                        <div class="roadmap-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="roadmap-content">
+                            <h3>Phase 1: Foundation</h3>
+                            <p>Core architecture and basic features</p>
+                            <span class="roadmap-date">Q4 2025 - Completed</span>
+                        </div>
+                    </div>
+                    <div class="roadmap-item active">
+                        <div class="roadmap-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="roadmap-content">
+                            <h3>Phase 2: Features</h3>
+                            <p>Advanced functionality and integrations</p>
+                            <span class="roadmap-date">Q1-Q2 2026 - In Progress (63%)</span>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="roadmap-content">
+                            <h3>Phase 3: Mobile Apps</h3>
+                            <p>iOS and Android applications</p>
+                            <span class="roadmap-date">Q3 2026 - Upcoming</span>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div class="roadmap-content">
+                            <h3>Phase 4: Launch</h3>
+                            <p>Public beta and official release</p>
+                            <span class="roadmap-date">Q1 2027 - Planned</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="faq">
             <div class="container">
                 <h2 class="section-title">Frequently Asked Questions</h2>
                 <div class="faq-grid">
                     <div class="faq-item">
-                        <h3>What is Tufn?</h3>
-                        <p>Tufn is a minimalist all-in-one productivity app that combines notes, tasks, digital canvas, and calendar in one elegant interface designed for maximum focus.</p>
+                        <div class="faq-question">
+                            <h3>What is Tufn?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Tufn is a minimalist all-in-one productivity app that combines notes, tasks, digital canvas, and calendar in one elegant interface designed for maximum focus.</p>
+                        </div>
                     </div>
                     <div class="faq-item">
-                        <h3>When will Tufn launch?</h3>
-                        <p>Tufn is currently in development with 63% progress and estimated to launch in 2027. Join our waitlist to get early access.</p>
+                        <div class="faq-question">
+                            <h3>When will Tufn launch?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Tufn is currently in development with 63% progress and estimated to launch in Q1 2027. Join our waitlist to get early access and stay updated on our progress.</p>
+                        </div>
                     </div>
                     <div class="faq-item">
-                        <h3>What makes Tufn different?</h3>
-                        <p>Unlike other productivity tools, Tufn offers a truly minimalist interface with integrated digital canvas for brainstorming, all while maintaining focus on essential features.</p>
+                        <div class="faq-question">
+                            <h3>What makes Tufn different?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Unlike other productivity tools, Tufn offers a truly minimalist interface with integrated digital canvas for brainstorming, all while maintaining focus on essential features without bloat.</p>
+                        </div>
                     </div>
                     <div class="faq-item">
-                        <h3>Is Tufn free?</h3>
-                        <p>Tufn is completely free.</p>
+                        <div class="faq-question">
+                            <h3>Is Tufn free?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Tufn is completely free. We believe productivity tools should be accessible to everyone.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Which platforms will be supported?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Tufn will be available on Windows, macOS, Linux, iOS, and Android. We'll also offer a web version that works in any modern browser.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3>Will my data be secure?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Absolutely. All data is encrypted both in transit and at rest. We use industry-standard encryption and never sell your data to third parties.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- Newsletter Section -->
+        <section class="newsletter">
+            <div class="container">
+                <div class="newsletter-content">
+                    <h2>Stay Updated</h2>
+                    <p>Get the latest updates on Tufn's development and be the first to know when we launch.</p>
+                    <button class="btn btn-primary" id="newsletter-signup">
+                        <i class="fas fa-envelope"></i> Join Our Waitlist
+                    </button>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <!-- Footer -->
     <footer id="contact">
         <div class="container">
-            <p>&copy; 2026 Tufn. All rights reserved.</p>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>tufn</h3>
+                    <p>Minimalist productivity for maximum focus.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#roadmap">Roadmap</a></li>
+                        <li><a href="development.html">Development</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> hello@tufn.app</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Made with ❤️</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tufn. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
+    <!-- Waitlist Modal -->
     <div id="waitlist-modal" class="modal">
         <div class="modal-content">
             <span class="modal-close">&times;</span>
-            <h3>Join Waitlist</h3>
+            <div class="modal-header">
+                <i class="fas fa-rocket"></i>
+                <h3>Join the Waitlist</h3>
+            </div>
             <p>Be the first to know when Tufn launches. Enter your email below:</p>
-            <div class="form-group">
-                <input type="email" id="waitlist-email" placeholder="your.email@example.com" required>
-                <div class="error-message" id="email-error"></div>
-            </div>
-            <button class="btn btn-primary" id="submit-waitlist">Join Waitlist</button>
-        </div>
-    </div>
-
-    <div id="download-modal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <h3>Download Tufn</h3>
-            <div class="download-options">
-                <div class="download-option">
-                    <i class="fab fa-windows"></i>
-                    <p>Windows</p>
-                    <button class="download-btn" data-platform="windows">Download</button>
+            <form id="waitlist-form">
+                <div class="form-group">
+                    <label for="waitlist-email">Email Address</label>
+                    <input type="email" id="waitlist-email" placeholder="your.email@example.com" required>
+                    <div class="error-message" id="email-error"></div>
                 </div>
-                <div class="download-option">
-                    <i class="fab fa-apple"></i>
-                    <p>macOS</p>
-                    <button class="download-btn" data-platform="mac">Download</button>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="updates-checkbox" checked>
+                        <span>Send me updates about Tufn's development</span>
+                    </label>
                 </div>
-                <div class="download-option">
-                    <i class="fab fa-linux"></i>
-                    <p>Linux</p>
-                    <button class="download-btn" data-platform="linux">Download</button>
-                </div>
+                <button type="submit" class="btn btn-primary btn-block" id="submit-waitlist">
+                    <i class="fas fa-paper-plane"></i> Join Waitlist
+                </button>
+            </form>
+            <div class="modal-footer">
+                <p class="success-message" id="success-message" style="display: none;">
+                    <i class="fas fa-check-circle"></i> Success! You're on the waitlist.
+                </p>
             </div>
         </div>
     </div>
 
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
 </body>
