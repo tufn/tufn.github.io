@@ -639,7 +639,7 @@ const initModals = () => {
     if (e.key === 'Escape') {
       elements.waitlistModal?.classList.remove('active');
       elements.emailError.textContent = '';
-      elements.successMessage.style.display = 'none');
+      elements.successMessage.style.display = 'none';
     }
   });
 };
