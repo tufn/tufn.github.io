@@ -6,10 +6,8 @@ let tufnSupabase;
 const initSupabase = () => {
   if (typeof window.supabase !== 'undefined') {
     tufnSupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    console.log('✅ Supabase initialized successfully');
     return true;
   }
-  console.error('❌ Supabase library not loaded');
   return false;
 };
 
@@ -68,9 +66,7 @@ const security = {
     const requests = security.rateLimits.get(key) || [];
     const recent = requests.filter(time => now - time < windowMs);
     
-    if (recent.length >= limit) {
-      return false;
-    }
+    if (recent.length >= limit) return false;
     
     recent.push(now);
     security.rateLimits.set(key, recent);
@@ -79,7 +75,7 @@ const security = {
   
   validateEmail: (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    return emailRegex.test(email) && email.length <= 254;
   },
   
   validateFingerprint: (fp) => {
@@ -108,48 +104,24 @@ const showToast = (message, type = 'info') => {
 };
 
 const updateWaitlistCount = async () => {
-  console.log('Updating waitlist count...');
-  
-  if (!tufnSupabase) {
-    console.error('Supabase not initialized');
-    if (elements.waitlistCountEl) {
-      elements.waitlistCountEl.textContent = '0';
-    }
-    return;
-  }
-  
-  if (!elements.waitlistCountEl) {
-    console.error('Waitlist count element not found');
-    return;
-  }
+  if (!tufnSupabase || !elements.waitlistCountEl) return;
   
   try {
-    console.log('Fetching from waitlist_counter...');
     const { data, error } = await tufnSupabase
       .from('waitlist_counter')
       .select('count')
       .eq('id', 1)
       .single();
     
-    console.log('Response:', { data, error });
-    
     if (error) {
-      console.error('Error fetching waitlist count:', error);
       elements.waitlistCountEl.textContent = '0';
       return;
     }
     
-    if (!data || data.count === undefined) {
-      console.error('No count data received');
-      elements.waitlistCountEl.textContent = '0';
-      return;
+    if (data && data.count !== undefined) {
+      animateNumber(elements.waitlistCountEl, data.count);
     }
-    
-    console.log('Count received:', data.count);
-    animateNumber(elements.waitlistCountEl, data.count);
-    
   } catch (error) {
-    console.error('Waitlist count error:', error);
     elements.waitlistCountEl.textContent = '0';
   }
 };
@@ -171,56 +143,52 @@ const animateNumber = (element, target) => {
   }, 16);
 };
 
-const initWaitlist = () => {
-  console.log('Initializing waitlist...');
+const closeModal = () => {
+  elements.waitlistModal?.classList.remove('active');
+  if (elements.emailError) elements.emailError.textContent = '';
+  if (elements.successMessage) elements.successMessage.style.display = 'none';
+};
+
+const markAsJoined = () => {
+  localStorage.setItem('waitlist_joined', 'true');
   
-  if (!elements.joinBtn) {
-    console.error('Join button not found');
-    return;
-  }
-  
-  if (localStorage.getItem('waitlist_joined')) {
+  if (elements.joinBtn) {
     elements.joinBtn.disabled = true;
     elements.joinBtn.innerHTML = '<i class="fas fa-check"></i> You\'re on the waitlist!';
     elements.joinBtn.classList.remove('pulse');
-    
-    if (elements.newsletterBtn) {
-      elements.newsletterBtn.disabled = true;
-      elements.newsletterBtn.innerHTML = '<i class="fas fa-check"></i> Already subscribed';
-    }
+  }
+  
+  if (elements.newsletterBtn) {
+    elements.newsletterBtn.disabled = true;
+    elements.newsletterBtn.innerHTML = '<i class="fas fa-check"></i> Already subscribed';
+  }
+};
+
+const initWaitlist = () => {
+  if (!elements.joinBtn) return;
+  
+  if (localStorage.getItem('waitlist_joined')) {
+    markAsJoined();
     return;
   }
   
   const openModal = (e) => {
     e.preventDefault();
-    console.log('Opening waitlist modal...');
-    
-    if (!elements.waitlistModal) {
-      console.error('Waitlist modal not found');
-      return;
-    }
+    if (!elements.waitlistModal) return;
     
     elements.waitlistModal.classList.add('active');
-    setTimeout(() => {
-      elements.waitlistEmail?.focus();
-    }, 100);
+    setTimeout(() => elements.waitlistEmail?.focus(), 100);
   };
   
   elements.joinBtn.addEventListener('click', openModal);
-  console.log('Join button listener added');
-  
-  if (elements.newsletterBtn) {
-    elements.newsletterBtn.addEventListener('click', openModal);
-    console.log('Newsletter button listener added');
-  }
+  elements.newsletterBtn?.addEventListener('click', openModal);
   
   if (elements.waitlistForm) {
     elements.waitlistForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      console.log('Form submitted');
       
       if (!tufnSupabase) {
-        showToast('Service not ready. Please try again in a moment.', 'error');
+        showToast('Service not ready. Please try again.', 'error');
         return;
       }
       
@@ -233,11 +201,12 @@ const initWaitlist = () => {
       
       const rateLimitKey = `waitlist_${getFingerprint()}`;
       if (!security.checkRateLimit(rateLimitKey, 3, 30000)) {
-        showToast('Too many requests. Please wait before trying again.', 'error');
+        showToast('Too many requests. Please wait.', 'error');
         return;
       }
       
       const email = elements.waitlistEmail.value.trim();
+      
       if (!email) {
         elements.emailError.textContent = 'Email is required';
         elements.waitlistEmail.focus();
@@ -245,73 +214,45 @@ const initWaitlist = () => {
       }
       
       if (!security.validateEmail(email)) {
-        elements.emailError.textContent = 'Please enter a valid email address';
+        elements.emailError.textContent = 'Please enter a valid email';
         elements.waitlistEmail.focus();
         return;
       }
       
       elements.emailError.textContent = '';
-      
       elements.submitWaitlist.disabled = true;
       elements.submitWaitlist.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Joining...';
       
       try {
-        const fp = security.sanitizeInput(getFingerprint());
-        const sanitizedEmail = security.sanitizeInput(email);
-
-        console.log('Inserting into waitlist...');
-        
         const { data, error } = await tufnSupabase
           .from('waitlist')
           .insert({
-            fingerprint: fp,
-            email: sanitizedEmail,
+            fingerprint: security.sanitizeInput(getFingerprint()),
+            email: security.sanitizeInput(email),
             created_at: new Date().toISOString()
           })
           .select();
 
         if (error) {
-          console.error('Supabase error:', error);
-          if (error.code === '23505' || error.message.includes('duplicate')) {
+          if (error.code === '23505' || error.message?.includes('duplicate')) {
             throw new Error('This email is already on the waitlist');
           }
-          throw error;
+          throw new Error('Failed to join waitlist');
         }
 
-        console.log('Successfully added to waitlist:', data);
-
-        const { error: counterError } = await tufnSupabase
-          .from('waitlist_counter')
-          .update({ count: tufnSupabase.raw('count + 1') })
-          .eq('id', 1);
-
-        if (counterError) {
-          console.error('Error incrementing waitlist counter:', counterError);
-        }
-
-        localStorage.setItem('waitlist_joined', 'true');
         elements.waitlistEmail.value = '';
         elements.successMessage.style.display = 'block';
         
         setTimeout(() => {
-          elements.waitlistModal.classList.remove('active');
-          elements.successMessage.style.display = 'none';
-          elements.joinBtn.disabled = true;
-          elements.joinBtn.innerHTML = '<i class="fas fa-check"></i> You\'re on the waitlist!';
-          elements.joinBtn.classList.remove('pulse');
-          
-          if (elements.newsletterBtn) {
-            elements.newsletterBtn.disabled = true;
-            elements.newsletterBtn.innerHTML = '<i class="fas fa-check"></i> Already subscribed';
-          }
+          closeModal();
+          markAsJoined();
+          updateWaitlistCount();
         }, 2000);
 
-        updateWaitlistCount();
         showToast('Successfully joined the waitlist!', 'success');
         
       } catch (error) {
-        console.error('Waitlist submission error:', error);
-        elements.emailError.textContent = error.message || 'Failed to join waitlist. Please try again.';
+        elements.emailError.textContent = error.message || 'Failed to join waitlist';
         showToast(error.message || 'Failed to join waitlist', 'error');
       } finally {
         elements.submitWaitlist.disabled = false;
@@ -344,9 +285,7 @@ const initMobileMenu = () => {
   elements.mobileMenuBtn.addEventListener('click', () => {
     elements.navLinks.classList.toggle('active');
     const icon = elements.mobileMenuBtn.querySelector('i');
-    icon.className = elements.navLinks.classList.contains('active') 
-      ? 'fas fa-times' 
-      : 'fas fa-bars';
+    icon.className = elements.navLinks.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
   });
   
   document.addEventListener('click', (e) => {
@@ -387,19 +326,20 @@ const initSmoothScroll = () => {
 const initScrollTop = () => {
   if (!elements.scrollTop) return;
   
+  let ticking = false;
+  
   window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-      elements.scrollTop.classList.add('visible');
-    } else {
-      elements.scrollTop.classList.remove('visible');
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        elements.scrollTop.classList.toggle('visible', window.pageYOffset > 300);
+        ticking = false;
+      });
+      ticking = true;
     }
   });
   
   elements.scrollTop.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 };
 
@@ -413,9 +353,7 @@ const initTabs = () => {
       
       tab.classList.add('active');
       const content = document.getElementById(`${tabId}-tab`);
-      if (content) {
-        content.classList.add('active');
-      }
+      content?.classList.add('active');
     });
   });
 };
@@ -437,6 +375,45 @@ const updateClock = () => {
 
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
+
+const renderCalendar = () => {
+  if (!elements.calendarDays) return;
+  
+  const firstDay = new Date(currentYear, currentMonth, 1).getDay() || 7;
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const today = new Date();
+  
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  
+  if (elements.currentMonthEl) {
+    elements.currentMonthEl.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+  }
+  
+  const totalCells = 42;
+  let html = '';
+  
+  for (let i = 1 - (firstDay - 1); i <= totalCells - (firstDay - 1); i++) {
+    const isOtherMonth = i < 1 || i > daysInMonth;
+    const isToday = i === today.getDate() && 
+                    currentMonth === today.getMonth() && 
+                    currentYear === today.getFullYear();
+    
+    let className = 'calendar-day';
+    if (isOtherMonth) className += ' other';
+    if (isToday) className += ' today';
+    
+    const dayNum = isOtherMonth 
+      ? (i < 1 ? new Date(currentYear, currentMonth, i).getDate() : i - daysInMonth)
+      : i;
+    
+    html += `<div class="${security.sanitizeHTML(className)}">${security.sanitizeHTML(dayNum.toString())}</div>`;
+  }
+  
+  elements.calendarDays.innerHTML = html;
+};
 
 const initCalendar = () => {
   if (!elements.calendarDays) return;
@@ -462,43 +439,6 @@ const initCalendar = () => {
   });
 };
 
-const renderCalendar = () => {
-  const firstDay = new Date(currentYear, currentMonth, 1).getDay() || 7;
-  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-  const today = new Date();
-  
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-  
-  if (elements.currentMonthEl) {
-    elements.currentMonthEl.textContent = `${monthNames[currentMonth]} ${currentYear}`;
-  }
-  
-  let html = '';
-  const totalCells = 42;
-  
-  for (let i = 1 - (firstDay - 1); i <= totalCells - (firstDay - 1); i++) {
-    const isOtherMonth = i < 1 || i > daysInMonth;
-    const isToday = i === today.getDate() && 
-                    currentMonth === today.getMonth() && 
-                    currentYear === today.getFullYear();
-    
-    let className = 'calendar-day';
-    if (isOtherMonth) className += ' other';
-    if (isToday) className += ' today';
-    
-    const dayNum = isOtherMonth 
-      ? (i < 1 ? new Date(currentYear, currentMonth, i).getDate() : i - daysInMonth)
-      : i;
-    
-    html += `<div class="${security.sanitizeHTML(className)}">${security.sanitizeHTML(dayNum.toString())}</div>`;
-  }
-  
-  elements.calendarDays.innerHTML = html;
-};
-
 const initCanvas = () => {
   const canvas = elements.drawingCanvas;
   if (!canvas) return;
@@ -515,8 +455,14 @@ const initCanvas = () => {
     canvas.width = rect.width;
     canvas.height = rect.height;
   };
+  
   resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
+  
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resizeCanvas, 250);
+  });
   
   elements.toolBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -530,23 +476,33 @@ const initCanvas = () => {
     currentColor = e.target.value;
   });
   
+  const getCoords = (e, rect) => {
+    const clientX = e.clientX || e.touches?.[0]?.clientX;
+    const clientY = e.clientY || e.touches?.[0]?.clientY;
+    return {
+      x: clientX - rect.left,
+      y: clientY - rect.top
+    };
+  };
+  
   const startDrawing = (e) => {
     isDrawing = true;
     const rect = canvas.getBoundingClientRect();
-    lastX = e.clientX - rect.left;
-    lastY = e.clientY - rect.top;
+    const coords = getCoords(e, rect);
+    lastX = coords.x;
+    lastY = coords.y;
   };
   
   const draw = (e) => {
     if (!isDrawing) return;
+    e.preventDefault();
     
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const coords = getCoords(e, rect);
     
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
-    ctx.lineTo(x, y);
+    ctx.lineTo(coords.x, coords.y);
     
     if (currentTool === 'pen') {
       ctx.strokeStyle = currentColor;
@@ -561,8 +517,8 @@ const initCanvas = () => {
       ctx.globalCompositeOperation = 'source-over';
     }
     
-    lastX = x;
-    lastY = y;
+    lastX = coords.x;
+    lastY = coords.y;
   };
   
   const stopDrawing = () => {
@@ -574,31 +530,9 @@ const initCanvas = () => {
   canvas.addEventListener('mouseup', stopDrawing);
   canvas.addEventListener('mouseleave', stopDrawing);
   
-  canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const mouseEvent = new MouseEvent('mousedown', {
-      clientX: touch.clientX,
-      clientY: touch.clientY
-    });
-    canvas.dispatchEvent(mouseEvent);
-  });
-  
-  canvas.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const mouseEvent = new MouseEvent('mousemove', {
-      clientX: touch.clientX,
-      clientY: touch.clientY
-    });
-    canvas.dispatchEvent(mouseEvent);
-  });
-  
-  canvas.addEventListener('touchend', (e) => {
-    e.preventDefault();
-    const mouseEvent = new MouseEvent('mouseup', {});
-    canvas.dispatchEvent(mouseEvent);
-  });
+  canvas.addEventListener('touchstart', startDrawing);
+  canvas.addEventListener('touchmove', draw);
+  canvas.addEventListener('touchend', stopDrawing);
 };
 
 const initFAQ = () => {
@@ -608,39 +542,23 @@ const initFAQ = () => {
     
     question.addEventListener('click', () => {
       const isActive = item.classList.contains('active');
-      
       elements.faqItems.forEach(i => i.classList.remove('active'));
-      
-      if (!isActive) {
-        item.classList.add('active');
-      }
+      if (!isActive) item.classList.add('active');
     });
   });
 };
 
 const initModals = () => {
   elements.modalCloseBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      elements.waitlistModal?.classList.remove('active');
-      elements.emailError.textContent = '';
-      elements.successMessage.style.display = 'none';
-    });
+    btn.addEventListener('click', closeModal);
   });
   
   elements.waitlistModal?.addEventListener('click', (e) => {
-    if (e.target === elements.waitlistModal) {
-      elements.waitlistModal.classList.remove('active');
-      elements.emailError.textContent = '';
-      elements.successMessage.style.display = 'none';
-    }
+    if (e.target === elements.waitlistModal) closeModal();
   });
   
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      elements.waitlistModal?.classList.remove('active');
-      elements.emailError.textContent = '';
-      elements.successMessage.style.display = 'none';
-    }
+    if (e.key === 'Escape') closeModal();
   });
 };
 
@@ -657,10 +575,7 @@ const cleanupRateLimits = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM Content Loaded');
-  
   initSupabase();
-  
   initTheme();
   initMobileMenu();
   initSmoothScroll();
@@ -675,13 +590,8 @@ document.addEventListener('DOMContentLoaded', () => {
   updateClock();
   setInterval(updateClock, 60000);
   
-  setTimeout(() => {
-    updateWaitlistCount();
-  }, 500);
-  
+  setTimeout(updateWaitlistCount, 500);
   setInterval(cleanupRateLimits, 300000);
-  
-  console.log('All initialization complete');
 });
 
 window.addEventListener('beforeunload', () => {
