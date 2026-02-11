@@ -43,7 +43,9 @@ const elements = {
 
 const security = {
   rateLimits: new Map(),
+  requestHistory: new Map(),
   lastRequest: 0,
+  blockedIPs: new Set(),
   
   sanitizeInput: (input) => {
     if (typeof input !== 'string') return input;
@@ -51,6 +53,9 @@ const security = {
       .replace(/[<>]/g, '')
       .replace(/javascript:/gi, '')
       .replace(/on\w+=/gi, '')
+      .replace(/data:/gi, '')
+      .replace(/vbscript:/gi, '')
+      .replace(/[\x00-\x1F\x7F]/g, '')
       .trim()
       .substring(0, 500);
   },
@@ -59,6 +64,12 @@ const security = {
     const div = document.createElement('div');
     div.textContent = html;
     return div.innerHTML;
+  },
+  
+  sanitizeEmail: (email) => {
+    const cleaned = email.toLowerCase().trim();
+    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+    return emailRegex.test(cleaned) ? cleaned : null;
   },
   
   checkRateLimit: (key, limit = 5, windowMs = 60000) => {
@@ -73,13 +84,50 @@ const security = {
     return true;
   },
   
+  checkRequestPattern: (fingerprint) => {
+    const now = Date.now();
+    const history = security.requestHistory.get(fingerprint) || [];
+    
+    const recentRequests = history.filter(time => now - time < 300000);
+    
+    if (recentRequests.length > 10) {
+      security.blockedIPs.add(fingerprint);
+      return false;
+    }
+    
+    recentRequests.push(now);
+    security.requestHistory.set(fingerprint, recentRequests);
+    return true;
+  },
+  
+  isBlocked: (fingerprint) => {
+    return security.blockedIPs.has(fingerprint);
+  },
+  
   validateEmail: (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email) && email.length <= 254;
+    if (!email || typeof email !== 'string') return false;
+    if (email.length < 5 || email.length > 254) return false;
+    
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    if (!emailRegex.test(email)) return false;
+    
+    const disposableDomains = ['tempmail.com', '10minutemail.com', 'guerrillamail.com', 'mailinator.com'];
+    const domain = email.split('@')[1]?.toLowerCase();
+    if (disposableDomains.includes(domain)) return false;
+    
+    return true;
   },
   
   validateFingerprint: (fp) => {
     return /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(fp);
+  },
+  
+  hashString: async (str) => {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(str);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
   }
 };
 
@@ -88,6 +136,7 @@ const getFingerprint = () => {
   if (!fp || !security.validateFingerprint(fp)) {
     fp = crypto.randomUUID();
     localStorage.setItem('tufn_fp', fp);
+    localStorage.setItem('tufn_fp_created', Date.now().toString());
   }
   return fp;
 };
@@ -95,7 +144,8 @@ const getFingerprint = () => {
 const showToast = (message, type = 'info') => {
   if (!elements.toast) return;
   
-  elements.toast.textContent = message;
+  const sanitizedMessage = security.sanitizeHTML(message);
+  elements.toast.textContent = sanitizedMessage;
   elements.toast.className = `toast ${type} show`;
   
   setTimeout(() => {
@@ -104,20 +154,31 @@ const showToast = (message, type = 'info') => {
 };
 
 const updateWaitlistCount = async () => {
-  if (!tufnSupabase || !elements.waitlistCountEl) return;
+  if (!elements.waitlistCountEl) return;
 
+  const url = `${SUPABASE_URL}/rest/v1/rpc/get_waitlist_count?apikey=${SUPABASE_ANON_KEY}`;
+  
   try {
-    const { count, error } = await tufnSupabase
-      .from('waitlist')
-      .select('*', { count: 'exact', head: true });
-
-    if (error) {
-      console.error(error);
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (!response.ok) {
+      console.error('HTTP error! Status:', response.status);
       elements.waitlistCountEl.textContent = '0';
       return;
     }
-
-    animateNumber(elements.waitlistCountEl, count || 0);
+    
+    const data = await response.json();
+    
+    if (Array.isArray(data) && data.length > 0 && typeof data[0].count === 'number') {
+      animateNumber(elements.waitlistCountEl, data[0].count);
+    } else {
+      elements.waitlistCountEl.textContent = '0';
+    }
   } catch (error) {
     console.error(error);
     elements.waitlistCountEl.textContent = '0';
@@ -190,6 +251,18 @@ const initWaitlist = () => {
         return;
       }
       
+      const fingerprint = getFingerprint();
+      
+      if (security.isBlocked(fingerprint)) {
+        showToast('Access temporarily blocked. Please try again later.', 'error');
+        return;
+      }
+      
+      if (!security.checkRequestPattern(fingerprint)) {
+        showToast('Too many requests. Please try again later.', 'error');
+        return;
+      }
+      
       const now = Date.now();
       if (now - security.lastRequest < 2000) {
         showToast('Please wait before trying again', 'warning');
@@ -197,7 +270,7 @@ const initWaitlist = () => {
       }
       security.lastRequest = now;
       
-      const rateLimitKey = `waitlist_${getFingerprint()}`;
+      const rateLimitKey = `waitlist_${fingerprint}`;
       if (!security.checkRateLimit(rateLimitKey, 3, 30000)) {
         showToast('Too many requests. Please wait.', 'error');
         return;
@@ -212,7 +285,14 @@ const initWaitlist = () => {
       }
       
       if (!security.validateEmail(email)) {
-        elements.emailError.textContent = 'Please enter a valid email';
+        elements.emailError.textContent = 'Please enter a valid email address';
+        elements.waitlistEmail.focus();
+        return;
+      }
+      
+      const sanitizedEmail = security.sanitizeEmail(email);
+      if (!sanitizedEmail) {
+        elements.emailError.textContent = 'Invalid email format';
         elements.waitlistEmail.focus();
         return;
       }
@@ -225,8 +305,8 @@ const initWaitlist = () => {
         const { error } = await tufnSupabase
           .from('waitlist')
           .insert({
-            fingerprint: security.sanitizeInput(getFingerprint()),
-            email: security.sanitizeInput(email),
+            fingerprint: security.sanitizeInput(fingerprint),
+            email: sanitizedEmail,
             created_at: new Date().toISOString()
           });
 
@@ -235,7 +315,7 @@ const initWaitlist = () => {
           if (error.code === '23505' || error.message?.includes('duplicate')) {
             throw new Error('This email is already on the waitlist');
           }
-          throw new Error('Failed to join waitlist');
+          throw new Error('Failed to join waitlist. Please try again.');
         }
 
         elements.waitlistEmail.value = '';
@@ -563,6 +643,7 @@ const initModals = () => {
 
 const cleanupRateLimits = () => {
   const now = Date.now();
+  
   for (const [key, times] of security.rateLimits) {
     const validTimes = times.filter(time => now - time < 600000);
     if (validTimes.length === 0) {
@@ -570,6 +651,21 @@ const cleanupRateLimits = () => {
     } else {
       security.rateLimits.set(key, validTimes);
     }
+  }
+  
+  for (const [key, times] of security.requestHistory) {
+    const validTimes = times.filter(time => now - time < 300000);
+    if (validTimes.length === 0) {
+      security.requestHistory.delete(key);
+    } else {
+      security.requestHistory.set(key, validTimes);
+    }
+  }
+  
+  const fpCreated = parseInt(localStorage.getItem('tufn_fp_created') || '0');
+  if (fpCreated && now - fpCreated > 2592000000) {
+    localStorage.removeItem('tufn_fp');
+    localStorage.removeItem('tufn_fp_created');
   }
 };
 
@@ -590,9 +686,11 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(updateClock, 60000);
   
   setTimeout(updateWaitlistCount, 500);
+  setInterval(updateWaitlistCount, 30000);
   setInterval(cleanupRateLimits, 300000);
 });
 
 window.addEventListener('beforeunload', () => {
   security.rateLimits.clear();
+  security.requestHistory.clear();
 });
