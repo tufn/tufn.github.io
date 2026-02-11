@@ -105,23 +105,21 @@ const showToast = (message, type = 'info') => {
 
 const updateWaitlistCount = async () => {
   if (!tufnSupabase || !elements.waitlistCountEl) return;
-  
+
   try {
-    const { data, error } = await tufnSupabase
-      .from('waitlist_counter')
-      .select('count')
-      .eq('id', 1)
-      .single();
-    
+    const { count, error } = await tufnSupabase
+      .from('waitlist')
+      .select('*', { count: 'exact', head: true });
+
     if (error) {
+      console.error(error);
       elements.waitlistCountEl.textContent = '0';
       return;
     }
-    
-    if (data && data.count !== undefined) {
-      animateNumber(elements.waitlistCountEl, data.count);
-    }
+
+    animateNumber(elements.waitlistCountEl, count || 0);
   } catch (error) {
+    console.error(error);
     elements.waitlistCountEl.textContent = '0';
   }
 };
@@ -224,16 +222,16 @@ const initWaitlist = () => {
       elements.submitWaitlist.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Joining...';
       
       try {
-        const { data, error } = await tufnSupabase
+        const { error } = await tufnSupabase
           .from('waitlist')
           .insert({
             fingerprint: security.sanitizeInput(getFingerprint()),
             email: security.sanitizeInput(email),
             created_at: new Date().toISOString()
-          })
-          .select();
+          });
 
         if (error) {
+          console.error(error);
           if (error.code === '23505' || error.message?.includes('duplicate')) {
             throw new Error('This email is already on the waitlist');
           }
@@ -252,6 +250,7 @@ const initWaitlist = () => {
         showToast('Successfully joined the waitlist!', 'success');
         
       } catch (error) {
+        console.error(error);
         elements.emailError.textContent = error.message || 'Failed to join waitlist';
         showToast(error.message || 'Failed to join waitlist', 'error');
       } finally {
