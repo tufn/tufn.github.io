@@ -160,9 +160,11 @@ const updateWaitlistCount = async () => {
   
   try {
     const response = await fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
       }
     });
     
@@ -174,11 +176,22 @@ const updateWaitlistCount = async () => {
     
     const data = await response.json();
     
-    if (Array.isArray(data) && data.length > 0 && typeof data[0].count === 'number') {
-      animateNumber(elements.waitlistCountEl, data[0].count);
-    } else {
-      elements.waitlistCountEl.textContent = '0';
+    let count = 0;
+    
+    if (typeof data === 'number') {
+      count = data;
+    } else if (Array.isArray(data) && data.length > 0) {
+      if (typeof data[0] === 'number') {
+        count = data[0];
+      } else if (data[0].count !== undefined) {
+        count = data[0].count;
+      }
+    } else if (data && typeof data.count === 'number') {
+      count = data.count;
     }
+    
+    animateNumber(elements.waitlistCountEl, count);
+    
   } catch (error) {
     console.error(error);
     elements.waitlistCountEl.textContent = '0';
