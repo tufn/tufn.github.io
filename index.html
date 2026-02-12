@@ -24,38 +24,33 @@
     <meta name="google-site-verification" content="0nr0dtW8uwU2h5Gd1019QFD3GgnkcDtCe11z4E6JDjc" />
 </head>
 <body>
-    <!-- Theme Toggle -->
     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
         <i class="fas fa-moon"></i>
     </button>
-
-    <!-- Scroll to Top Button -->
     <button id="scroll-top" class="scroll-top" aria-label="Scroll to top">
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- Header -->
     <header class="header">
         <nav class="nav container">
             <div class="nav-logo">
                 <span class="logo">tufn</span>
                 <span class="logo-sr">- Minimalist Productivity Software</span>
             </div>
-            <div class="nav-links">
+            <div class="nav-links" id="nav-links">
                 <a href="#features">Features</a>
                 <a href="#roadmap">Roadmap</a>
                 <a href="#faq">FAQ</a>
                 <a href="development.html">Development</a>
                 <a href="#contact">Contact</a>
             </div>
-            <button class="mobile-menu-btn" aria-label="Toggle mobile menu">
+            <button class="mobile-menu-btn" aria-label="Toggle mobile menu" id="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
             </button>
         </nav>
     </header>
 
     <main>
-        <!-- Hero Section -->
         <section class="hero">
             <div class="container">
                 <div class="hero-content">
@@ -92,28 +87,27 @@
                     <div class="app-preview">
                         <div class="app-tabs">
                             <button class="app-tab active" data-tab="dashboard">
-                                <i class="fas fa-chart-pie"></i> 
+                                <i class="fas fa-chart-pie"></i>
                                 <span>Dashboard</span>
                             </button>
                             <button class="app-tab" data-tab="notes">
-                                <i class="fas fa-sticky-note"></i> 
+                                <i class="fas fa-sticky-note"></i>
                                 <span>Notes</span>
                             </button>
                             <button class="app-tab" data-tab="tasks">
-                                <i class="fas fa-tasks"></i> 
+                                <i class="fas fa-tasks"></i>
                                 <span>Tasks</span>
                             </button>
                             <button class="app-tab" data-tab="canvas">
-                                <i class="fas fa-paint-brush"></i> 
+                                <i class="fas fa-paint-brush"></i>
                                 <span>Canvas</span>
                             </button>
                             <button class="app-tab" data-tab="calendar">
-                                <i class="fas fa-calendar-alt"></i> 
+                                <i class="fas fa-calendar-alt"></i>
                                 <span>Calendar</span>
                             </button>
                         </div>
                         <div class="app-content">
-                            <!-- Dashboard Tab -->
                             <div class="tab-content active" id="dashboard-tab">
                                 <div class="time-display" id="current-time">00:00</div>
                                 <div class="date-display" id="current-date"></div>
@@ -174,8 +168,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Notes Tab -->
                             <div class="tab-content" id="notes-tab">
                                 <div class="notes-container">
                                     <div class="notes-header">
@@ -201,8 +193,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Tasks Tab -->
                             <div class="tab-content" id="tasks-tab">
                                 <div class="tasks-container">
                                     <div class="tasks-header">
@@ -236,8 +226,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Canvas Tab -->
                             <div class="tab-content" id="canvas-tab">
                                 <div class="canvas-container">
                                     <div class="canvas-toolbar">
@@ -253,8 +241,6 @@
                                     <p class="canvas-hint">Click and drag to draw • Use toolbar to change tools</p>
                                 </div>
                             </div>
-
-                            <!-- Calendar Tab -->
                             <div class="tab-content" id="calendar-tab">
                                 <div class="calendar-header">
                                     <h3><i class="fas fa-calendar-alt"></i> Calendar</h3>
@@ -266,7 +252,13 @@
                                 </div>
                                 <div class="calendar-grid">
                                     <div class="calendar-weekdays">
-                                        <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+                                        <div>Mon</div>
+                                        <div>Tue</div>
+                                        <div>Wed</div>
+                                        <div>Thu</div>
+                                        <div>Fri</div>
+                                        <div>Sat</div>
+                                        <div>Sun</div>
                                     </div>
                                     <div class="calendar-days"></div>
                                 </div>
@@ -277,7 +269,6 @@
             </div>
         </section>
 
-        <!-- Features Section -->
         <section id="features" class="features">
             <div class="container">
                 <h2 class="section-title">Everything you need, nothing you don't</h2>
@@ -359,7 +350,6 @@
             </div>
         </section>
 
-        <!-- Roadmap Section -->
         <section id="roadmap" class="roadmap">
             <div class="container">
                 <h2 class="section-title">Development Roadmap</h2>
@@ -375,11 +365,11 @@
                             <span class="roadmap-date">Q1 2026 - Completed</span>
                         </div>
                     </div>
-                    <div class="roadmap-item active">
+                    <div class="roadmap-item completed">
                         <div class="roadmap-icon">
-                            <i class="fas fa-code"></i>
+                            <i class="fas fa-check"></i>
                         </div>
-                        <div class="roadmap-item active">
+                        <div class="roadmap-content">
                             <h3>Phase 2: Features</h3>
                             <p>Advanced functionality and integrations</p>
                             <span class="roadmap-date">Q1 2026 - Completed</span>
@@ -409,7 +399,6 @@
             </div>
         </section>
 
-        <!-- FAQ Section -->
         <section id="faq" class="faq">
             <div class="container">
                 <h2 class="section-title">Frequently Asked Questions</h2>
@@ -472,7 +461,6 @@
             </div>
         </section>
 
-        <!-- Newsletter Section -->
         <section class="newsletter">
             <div class="container">
                 <div class="newsletter-content">
@@ -486,7 +474,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer id="contact">
         <div class="container">
             <div class="footer-content">
@@ -529,7 +516,6 @@
         </div>
     </footer>
 
-    <!-- Waitlist Modal -->
     <div id="waitlist-modal" class="modal">
         <div class="modal-content">
             <span class="modal-close">&times;</span>
@@ -562,11 +548,16 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
     <div id="toast" class="toast"></div>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js?v=2.0"></script>
+    <script>
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.getElementById('nav-links');
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
