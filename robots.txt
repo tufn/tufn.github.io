@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tufn.github.io/sitemap.xml
