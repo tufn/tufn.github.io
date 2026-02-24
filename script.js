@@ -98,12 +98,32 @@ const animNum = (el, target) => {
 };
 
 const fetchCount = async () => {
-  const el = $("waitlist-count"); if (!el) return;
-  if (!db) return;
+  const el = $("waitlist-count");
+  if (!el) return;
+
+  if (!db) {
+    if (initRetries < MAX_RETRIES) {
+      initRetries++;
+      setTimeout(fetchCount, 500);
+    }
+    return;
+  }
+
   try {
-    const { count, error } = await db.from("waitlist").select("*", { count: "exact", head: true });
-    if (!error && typeof count === "number") animNum(el, count);
-  } catch {}
+    const { data, error } = await db.rpc("get_waitlist_count");
+    if (error) {
+      console.error(error);
+      el.textContent = "0";
+      return;
+    }
+
+    const count = Array.isArray(data) ? data[0] : data;
+    animNum(el, count || 0);
+
+  } catch (err) {
+    console.error(err);
+    el.textContent = "0";
+  }
 };
 
 const initRealtime = () => {
