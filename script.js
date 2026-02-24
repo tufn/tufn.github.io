@@ -113,16 +113,25 @@ const fetchCount = async () => {
     const { data, error } = await db.rpc("get_waitlist_count");
     if (error) {
       console.error(error);
-      el.textContent = "0";
+      el.textContent = "--";
       return;
     }
 
-    const count = Array.isArray(data) ? data[0] : data;
-    animNum(el, count || 0);
+    // fixed for count
+    let count = 0;
+    if (Array.isArray(data)) {
+      count = data[0]?.count ?? data[0] ?? 0;
+    } else if (typeof data === "number") {
+      count = data;
+    } else if (data?.count !== undefined) {
+      count = data.count;
+    }
+
+    animNum(el, count);
 
   } catch (err) {
     console.error(err);
-    el.textContent = "0";
+    el.textContent = "--";
   }
 };
 
