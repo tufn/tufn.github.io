@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dev Log — Tufn</title>
+  <meta name="description" content="Tufn development log and version history.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="container">
+      <nav class="nav">
+        <a href="index.html" class="nav-logo">
+          <div class="logo-mark"><span>T</span></div>
+          <span class="logo-text">tufn</span>
+        </a>
+        <div class="nav-center">
+          <a href="index.html#features" class="nav-link">Features</a>
+          <a href="index.html#roadmap" class="nav-link">Roadmap</a>
+          <a href="index.html#faq" class="nav-link">FAQ</a>
+          <a href="development.html" class="nav-link active-link">Dev Log</a>
+          <a href="index.html#contact" class="nav-link">Contact</a>
+        </div>
+        <div class="nav-right">
+          <button class="theme-btn" id="theme-btn" aria-label="Toggle theme">
+            <i class="fas fa-moon"></i>
+          </button>
+          <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html#features" class="mobile-link">Features</a>
+  <a href="index.html#roadmap" class="mobile-link">Roadmap</a>
+  <a href="index.html#faq" class="mobile-link">FAQ</a>
+  <a href="development.html" class="mobile-link">Dev Log</a>
+  <a href="index.html#contact" class="mobile-link">Contact</a>
+</div>
+
+<main>
+  <div class="page-hero">
+    <div class="container">
+      <div class="page-hero-content">
+        <span class="section-tag">Development Log</span>
+        <h1>Building in public.</h1>
+        <p>A transparent changelog of every version and change. Follow along as Tufn is built from scratch.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <div class="container">
+
+      <div style="max-width:800px;margin:0 auto 60px;">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;border:1px solid var(--line);border-radius:var(--r-xl);overflow:hidden;margin-bottom:48px;">
+          <div style="background:var(--bg);padding:28px 24px;">
+            <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;letter-spacing:-1.5px;line-height:1;">75%</div>
+            <div style="font-size:13px;color:var(--ink-3);margin-top:4px;">Overall progress</div>
+          </div>
+          <div style="background:var(--bg);padding:28px 24px;">
+            <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;letter-spacing:-1.5px;line-height:1;">A0.0.5</div>
+            <div style="font-size:13px;color:var(--ink-3);margin-top:4px;">Current version</div>
+          </div>
+          <div style="background:var(--bg);padding:28px 24px;">
+            <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;letter-spacing:-1.5px;line-height:1;">Q1 2027</div>
+            <div style="font-size:13px;color:var(--ink-3);margin-top:4px;">Launch target</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <h2 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;letter-spacing:-0.5px;">Version History</h2>
+          <a href="https://github.com/tufn" target="_blank" class="btn btn-outline btn-sm">
+            <i class="fab fa-github"></i> GitHub
+          </a>
+        </div>
+
+        <div class="dev-status-box">
+          <div class="dev-version">
+            <span class="dev-ver-tag">A0.0.5</span>
+            <span class="dev-ver-desc">Reimagined UI overhaul, built-in Pomodoro timer, calendar rendering fix, task completion bug fixes, performance improvements across all panels.</span>
+          </div>
+          <div class="dev-version">
+            <span class="dev-ver-tag">A0.0.4</span>
+            <span class="dev-ver-desc">Enhanced UI consistency, accessibility improvements (ARIA labels, keyboard navigation), dark mode refinements, and mobile layout fixes.</span>
+          </div>
+          <div class="dev-version">
+            <span class="dev-ver-tag">A0.0.3</span>
+            <span class="dev-ver-desc">Visual updates, canvas performance improvements, smoother tab transitions, and reduced bundle size.</span>
+          </div>
+          <div class="dev-version">
+            <span class="dev-ver-tag">A0.0.2</span>
+            <span class="dev-ver-desc">Full calendar integration with month navigation, cloud sync foundation, event management system.</span>
+          </div>
+          <div class="dev-version">
+            <span class="dev-ver-tag">A0.0.1</span>
+            <span class="dev-ver-desc">Initial build: Notes, Canvas, Tasklist, and Dashboard integration. Core architecture established.</span>
+          </div>
+        </div>
+
+        <div style="background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r-xl);padding:28px 32px;margin-top:32px;">
+          <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;letter-spacing:-0.3px;margin-bottom:10px;">Up next in A0.0.6</h3>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:16px;">
+            <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink-2);">
+              <span style="width:18px;height:18px;border-radius:50%;background:var(--bg-3);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--ink-3);flex-shrink:0;"><i class="fas fa-circle"></i></span>
+              Note editor with full Markdown rendering and preview mode
+            </li>
+            <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink-2);">
+              <span style="width:18px;height:18px;border-radius:50%;background:var(--bg-3);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--ink-3);flex-shrink:0;"><i class="fas fa-circle"></i></span>
+              Task subtasks and recurring task support
+            </li>
+            <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink-2);">
+              <span style="width:18px;height:18px;border-radius:50%;background:var(--bg-3);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--ink-3);flex-shrink:0;"><i class="fas fa-circle"></i></span>
+              Canvas shape tools and export functionality
+            </li>
+            <li style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink-2);">
+              <span style="width:18px;height:18px;border-radius:50%;background:var(--bg-3);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--ink-3);flex-shrink:0;"><i class="fas fa-circle"></i></span>
+              Cross-device cloud sync (beta)
+            </li>
+          </ul>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:36px;flex-wrap:wrap;">
+          <a href="index.html" class="btn btn-primary">
+            <i class="fas fa-eye"></i> View Live Preview
+          </a>
+          <a href="https://github.com/tufn" target="_blank" class="btn btn-outline">
+            <i class="fab fa-github"></i> GitHub Repository
+          </a>
+        </div>
+
+        <p style="font-size:13px;color:var(--ink-3);margin-top:24px;">
+          <i class="fas fa-info-circle" style="margin-right:6px;"></i>
+          Development updates are posted on GitHub as they happen.
+        </p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <p>&copy; 2026 Tufn. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="index.html">Home</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const tb = document.getElementById("theme-btn");
+  const s = localStorage.getItem("tufn_theme");
+  if (s === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
+    tb.querySelector("i").className = "fas fa-sun";
+  }
+  tb.addEventListener("click", () => {
+    const d = document.documentElement.getAttribute("data-theme") === "dark";
+    document.documentElement.setAttribute("data-theme", d ? "" : "dark");
+    tb.querySelector("i").className = d ? "fas fa-moon" : "fas fa-sun";
+    localStorage.setItem("tufn_theme", d ? "light" : "dark");
+  });
+  const mt = document.getElementById("mobile-toggle");
+  const mm = document.getElementById("mobile-menu");
+  mt.addEventListener("click", () => {
+    const o = mm.classList.toggle("open");
+    mt.querySelector("i").className = o ? "fas fa-times" : "fas fa-bars";
+  });
+</script>
+</body>
+</html>
