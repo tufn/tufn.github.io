@@ -1,0 +1,14 @@
+{
+  "version": "A0.0.5",
+  "date": "2026-02-20",
+  "title": "Polish & Timer",
+  "description": "Reimagined UI overhaul, built-in Pomodoro timer, calendar rendering fix, task completion bug fixes, performance improvements across all panels.",
+  "images": ["img.png", "img2.png"],
+  "changes": [
+    "Full UI overhaul with Swiss-grid layout",
+    "Built-in Pomodoro focus timer",
+    "Calendar rendering fixes",
+    "Task completion bug fixes",
+    "Dark mode refinements"
+  ]
+}
