@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tufn — Minimalist Productivity</title>
+  <meta name="description" content="Tufn is a free minimalist productivity app combining notes, tasks, digital canvas, and calendar in one focused interface. Launching 2027.">
+  <meta name="author" content="Tufn">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://tufn.github.io/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tufn.github.io/">
+  <meta property="og:title" content="Tufn — Minimalist Productivity">
+  <meta property="og:description" content="Notes, tasks, canvas and calendar in one focused interface. Free. Launching 2027.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@tufn_off">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta name="google-site-verification" content="0nr0dtW8uwU2h5Gd1019QFD3GgnkcDtCe11z4E6JDjc">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;1,6..72,200;1,6..72,300;1,6..72,400&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header" id="header">
+  <div class="container">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="/" class="nav-logo" aria-label="Tufn home">
+        <div class="logo-mark" aria-hidden="true">T</div>
+        <span class="logo-text">tufn</span>
+      </a>
+      <div class="nav-links" id="nav-links">
+        <a href="#features"        class="nav-link">Features</a>
+        <a href="#roadmap"         class="nav-link">Roadmap</a>
+        <a href="#faq"             class="nav-link">FAQ</a>
+        <a href="development.html" class="nav-link">Dev Log</a>
+      </div>
+      <div class="nav-actions">
+        <button class="theme-btn" id="theme-btn" type="button" aria-label="Switch to dark mode">
+          <svg class="icon-sun" aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="icon-moon" aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
+        </button>
+        <button class="btn btn-sm" id="nav-waitlist" type="button">Join Waitlist</button>
+        <button class="mobile-toggle" id="mobile-toggle" type="button"
+                aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
+  <div class="mobile-inner">
+    <a href="#features"        class="mobile-link">Features</a>
+    <a href="#roadmap"         class="mobile-link">Roadmap</a>
+    <a href="#faq"             class="mobile-link">FAQ</a>
+    <a href="development.html" class="mobile-link">Dev Log</a>
+    <a href="privacy.html"     class="mobile-link">Privacy</a>
+    <div class="mobile-cta">
+      <button class="btn btn-primary btn-block" id="mobile-waitlist" type="button">Join Waitlist</button>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- ═══ HERO ══════════════════════════════════════════ -->
+  <section class="hero" aria-label="Hero">
+    <div class="hero-wrap">
+
+      <!-- Left copy -->
+      <div class="hero-left">
+        <div class="hero-status" role="status">
+          <span class="live-dot" aria-hidden="true"></span>
+          In active development
+        </div>
+        <h1 class="hero-title">
+          Minimalist<br>productivity,<br><em>maximal</em> focus.
+        </h1>
+        <p class="hero-sub">
+          Notes, tasks, canvas and calendar — one place, zero noise, deep work.
+        </p>
+        <div class="hero-ctas">
+          <button class="btn btn-primary" id="join-waitlist" type="button">Join the Waitlist</button>
+          <a href="development.html" class="btn-text">
+            View progress
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+        <div class="hero-stats" role="group" aria-label="Project statistics">
+          <div class="hstat">
+            <span class="hstat-val" id="waitlist-count" aria-live="polite">—</span>
+            <span class="hstat-lbl">
+              <span class="live-badge" aria-hidden="true"><span class="live-dot-xs"></span>Live</span>
+              waiting
+            </span>
+          </div>
+          <div class="hstat-div" aria-hidden="true"></div>
+          <div class="hstat">
+            <span class="hstat-val">75%</span>
+            <span class="hstat-lbl">Complete</span>
+          </div>
+          <div class="hstat-div" aria-hidden="true"></div>
+          <div class="hstat">
+            <span class="hstat-val">2027</span>
+            <span class="hstat-lbl">Launch</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: interactive app preview -->
+      <div class="hero-right">
+        <div class="iapp" id="iapp" role="region" aria-label="Interactive app preview">
+
+          <!-- Fake titlebar -->
+          <div class="iapp-chrome" aria-hidden="true">
+            <div class="chrome-dots">
+              <span style="background:#FF5F57"></span>
+              <span style="background:#FEBC2E"></span>
+              <span style="background:#28C840"></span>
+            </div>
+            <span class="iapp-chrome-lbl" id="iapp-chrome-lbl">tufn — dashboard</span>
+            <div class="chrome-acts">
+              <button class="chrome-act-btn" id="iapp-expand" aria-label="Expand">
+                <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><rect x=".5" y=".5" width="3.2" height="3.2" rx=".5" stroke="currentColor" stroke-width="1"/><rect x="5.3" y=".5" width="3.2" height="3.2" rx=".5" stroke="currentColor" stroke-width="1"/><rect x=".5" y="5.3" width="3.2" height="3.2" rx=".5" stroke="currentColor" stroke-width="1"/><rect x="5.3" y="5.3" width="3.2" height="3.2" rx=".5" stroke="currentColor" stroke-width="1"/></svg>
+              </button>
+              <button class="chrome-act-btn" id="iapp-expand2" aria-label="Expand fullscreen">
+                <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1 3.5V1h2.5M5.5 1H8v2.5M8 5.5V8H5.5M3.5 8H1V5.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Screenshot image with hotspot overlays -->
+          <div class="iapp-img-wrap" id="iapp-img-wrap">
+            <img class="iapp-img" id="iapp-img" src="" alt="Tufn app preview" draggable="false">
+            <div class="iapp-placeholder" id="iapp-placeholder" aria-hidden="true">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <span>Place screenshots in interactive/</span>
+              <span style="opacity:.55;font-size:9.5px">e.g. interactive/dashboard_w.png</span>
+            </div>
+            <!-- Hotspots rendered by JS -->
+            <div class="iapp-spots" id="iapp-spots" aria-hidden="true"></div>
+          </div>
+
+          <!-- Section tabs (bottom strip) -->
+        </div><!-- /iapp -->
+      </div><!-- /hero-right -->
+
+    </div>
+  </section>
+
+  <!-- ═══ FEATURES ══════════════════════════════════════ -->
+  <section id="features" class="feats-section">
+    <div class="container">
+      <span class="eyebrow">Features</span>
+      <h2 class="section-title">Everything you need,<br>nothing you don't.</h2>
+      <p class="section-sub">Built from the ground up for focus and clarity. No bloat, no distractions, no subscriptions.</p>
+      <div class="feats-grid">
+        <div class="feat">
+          <span class="feat-n">01</span>
+          <h3>Smart Notes</h3>
+          <p>Rich text and Markdown editing with tags, folder organization, and instant full-text search. Your thoughts, perfectly captured and always findable.</p>
+        </div>
+        <div class="feat">
+          <span class="feat-n">02</span>
+          <h3>Task Management</h3>
+          <p>Priority levels, due dates, and smart filtering. Views that adapt to how you actually work — inbox, today, upcoming, or project-focused.</p>
+        </div>
+        <div class="feat">
+          <span class="feat-n">03</span>
+          <h3>Digital Canvas</h3>
+          <p>Freehand drawing, shapes, arrows, and text. Brainstorm visually, annotate notes, sketch wireframes. Export to PNG or SVG.</p>
+        </div>
+        <div class="feat">
+          <span class="feat-n">04</span>
+          <h3>Calendar</h3>
+          <p>Month and week views with full event management, recurring events, and reminders. Synced across all your devices so you never miss a deadline.</p>
+        </div>
+        <div class="feat">
+          <span class="feat-n">05</span>
+          <h3>Cloud Sync</h3>
+          <p>End-to-end encrypted, offline-first architecture. Your data is stored locally first and synced securely in the background. Always accessible, always private.</p>
+        </div>
+        <div class="feat">
+          <span class="feat-n">06</span>
+          <h3>Focus Mode</h3>
+          <p>One-click distraction-free mode with a built-in Pomodoro timer and Do Not Disturb. Deep work, made simple. Your flow, protected.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ROADMAP ════════════════════════════════════════ -->
+  <section id="roadmap" class="rm-section">
+    <div class="container">
+      <span class="eyebrow">Roadmap</span>
+      <h2 class="section-title">The path to launch.</h2>
+      <p class="section-sub">Transparent development, milestone by milestone. No vague promises — just honest progress.</p>
+      <ol class="rm-list" aria-label="Development roadmap">
+        <li class="rm-item is-done">
+          <div class="rm-dot">
+            <svg aria-hidden="true" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="rm-body">
+            <span class="rm-phase">Q1 2026 — Completed</span>
+            <h3>Phase 1: Foundation</h3>
+            <p>Core architecture, notes editor, task list, digital canvas, and dashboard all integrated and working together.</p>
+          </div>
+        </li>
+        <li class="rm-item is-done">
+          <div class="rm-dot">
+            <svg aria-hidden="true" width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="rm-body">
+            <span class="rm-phase">Q1 2026 — Completed</span>
+            <h3>Phase 2: Features</h3>
+            <p>Calendar integration, cloud sync foundation, Focus Mode with Pomodoro timer, dark mode, and advanced task filtering.</p>
+          </div>
+        </li>
+        <li class="rm-item is-active">
+          <div class="rm-dot"><span class="rm-pulse" aria-hidden="true"></span></div>
+          <div class="rm-body">
+            <span class="rm-phase">Q3 2026 — In progress</span>
+            <h3>Phase 3: Polish</h3>
+            <p>Bug fixing, performance tuning, accessibility audit, UI refinements, and getting every detail right before public release.</p>
+          </div>
+        </li>
+        <li class="rm-item">
+          <div class="rm-dot"></div>
+          <div class="rm-body">
+            <span class="rm-phase">Q1 2027 — Planned</span>
+            <h3>Phase 4: Launch</h3>
+            <p>Public beta for waitlist members, app store submissions for iOS and Android, and the official v1.0 release across all platforms.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ═══ FAQ ════════════════════════════════════════════ -->
+  <section id="faq" class="faq-section">
+    <div class="container">
+      <span class="eyebrow">FAQ</span>
+      <h2 class="section-title">Questions, answered.</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span>What is Tufn?</span>
+            <svg class="faq-arr" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-a" hidden>
+            <p>Tufn is a free, minimalist all-in-one productivity app that combines notes, tasks, a digital canvas, and a calendar in a single clean interface built for deep work and sustained focus. No subscriptions, no paywalls.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span>When does it launch?</span>
+            <svg class="faq-arr" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-a" hidden>
+            <p>Tufn is currently 75% complete and targeting a Q1 2027 public release. Join the waitlist to be first in line — you'll get an email the moment we go live.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span>What makes it different?</span>
+            <svg class="faq-arr" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-a" hidden>
+            <p>Most productivity tools suffer from feature bloat — they try to do everything and end up doing nothing particularly well. Tufn is built around a single conviction: the best tool is one that gets out of your way. Minimal interface, maximal focus. Completely free, forever.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span>Is it really free?</span>
+            <svg class="faq-arr" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-a" hidden>
+            <p>Yes — completely, genuinely free. No free tier with a "Pro" upsell, no credit card required, no ads, no data selling. Productivity tools should be accessible to everyone. Free on every platform, forever.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span>Which platforms will it support?</span>
+            <svg class="faq-arr" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-a" hidden>
+            <p>Tufn will launch on Windows, macOS, Linux, iOS, and Android. There will also be a web version that runs in any modern browser — no installation required.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" type="button" aria-expanded="false">
+            <span>Is my data private and secure?</span>
+            <svg class="faq-arr" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-a" hidden>
+            <p>Your notes, tasks, and data are stored locally on your device. Cloud sync is opt-in and uses end-to-end encryption — your data is encrypted before it ever leaves your device. We literally cannot read it. See our <a href="privacy.html">Privacy Policy</a>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ════════════════════════════════════════════ -->
+  <section class="cta-section" aria-label="Join the waitlist">
+    <div class="container">
+      <div class="cta-inner">
+        <span class="cta-eyebrow">Early access · Free forever</span>
+        <h2>Be first<br>in line.</h2>
+        <p>Join the waitlist and get notified the moment Tufn launches in 2027. No spam, ever.</p>
+        <button class="btn btn-cta" id="cta-waitlist" type="button">Join the Waitlist</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── FOOTER ─────────────────────────────────────────── -->
+<footer id="contact" class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="nav-logo" aria-label="Tufn home">
+          <div class="logo-mark" aria-hidden="true">T</div>
+          <span class="logo-text">tufn</span>
+        </a>
+        <p>Minimalist productivity for maximum focus. Built in public, launching 2027. Free, forever.</p>
+        <div class="footer-socials">
+          <a href="https://x.com/tufn_off" aria-label="Tufn on X" rel="noopener noreferrer" target="_blank">
+            <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="https://github.com/tufn" aria-label="Tufn on GitHub" rel="noopener noreferrer" target="_blank">
+            <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h3>Product</h3>
+          <a href="#features">Features</a>
+          <a href="#roadmap">Roadmap</a>
+          <a href="development.html">Dev Log</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h3>Legal</h3>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+        </div>
+        <div class="footer-col">
+          <h3>Contact</h3>
+          <a href="mailto:tufn-off@proton.me">tufn-off@proton.me</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Tufn. All rights reserved.</p>
+      <div class="footer-btm-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="mailto:tufn-off@proton.me">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ── MODAL ──────────────────────────────────────────── -->
+<div class="modal-overlay" id="waitlist-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="modal-title">Join the Waitlist</h2>
+      <button class="modal-close" id="modal-close" type="button" aria-label="Close">
+        <svg aria-hidden="true" width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-desc">Be first in line when Tufn launches. Drop your email and we'll reach out the moment we go live — no spam, ever.</p>
+      <div class="modal-ok" id="modal-ok" hidden>
+        <svg aria-hidden="true" width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        You're on the list — we'll be in touch.
+      </div>
+      <form id="waitlist-form" novalidate autocomplete="on">
+        <div class="form-field">
+          <label for="wl-email">Email address</label>
+          <input type="email" id="wl-email" name="email" placeholder="you@example.com"
+                 autocomplete="email" inputmode="email" maxlength="254"
+                 spellcheck="false" required aria-required="true" aria-describedby="wl-error">
+          <div class="field-err" id="wl-error" role="alert" aria-live="assertive"></div>
+        </div>
+        <label class="check-label">
+          <input type="checkbox" id="wl-updates" name="updates" checked>
+          Send me occasional development updates
+        </label>
+        <button type="submit" class="btn btn-primary btn-block" id="wl-submit">Join Waitlist</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ── LIGHTBOX ───────────────────────────────────────── -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot preview">
+  <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Close preview">
+    <svg aria-hidden="true" width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  </button>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="">
+</div>
+
+<button class="scroll-top" id="scroll-top" type="button" aria-label="Back to top">
+  <svg aria-hidden="true" width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 12V2M2 7l5-5 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" crossorigin="anonymous" defer></script>
+<script src="script.js" defer></script>
+
+<div class="iapp-fs" id="iapp-fs" hidden>
+  <div class="iapp-fs-box" id="iapp-fs-box">
+    <div class="iapp-fs-chrome">
+      <div class="chrome-dots" aria-hidden="true">
+        <span style="background:#FF5F57"></span>
+        <span style="background:#FEBC2E"></span>
+        <span style="background:#28C840"></span>
+      </div>
+      <span class="iapp-fs-lbl" id="iapp-fs-lbl">tufn — dashboard</span>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <button class="iapp-fs-resize" id="iapp-fs-resize" aria-label="Toggle size">
+          <svg id="iapp-fs-resize-icon" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2v8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </button>
+        <button class="iapp-fs-close" id="iapp-fs-close" aria-label="Close">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 1l9 9M10 1l-9 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="iapp-fs-img-wrap" id="iapp-fs-img-wrap">
+      <img class="iapp-fs-img" id="iapp-fs-img" src="" alt="Tufn app preview" draggable="false">
+      <div class="iapp-spots" id="iapp-fs-spots"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
