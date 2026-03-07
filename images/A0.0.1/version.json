@@ -1,0 +1,10 @@
+{
+  "version": "A0.0.1",
+  "date": "2026-02-08",
+  "title": "Basic Intagrations & Placeholders",
+  "description": "Integration of basic things, most are placeholders.",
+  "images": ["img.png"],
+  "changes": [
+    "Basic functions"
+  ]
+}

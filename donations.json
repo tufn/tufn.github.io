@@ -1,0 +1,8 @@
+{
+  "target": 50,
+  "wallets": {
+    "btc": "bc1q8z2427jvdtqzfty8j3ktjetqthj0rg3wtf2uld",
+    "eth": "0x28ed2CE52c18130e3f71F62DB66110101aeb6A98",
+    "ltc": "LbK8wkGPfXLmtUCbVtJiWPAVj8ZSbgrdNR"
+  }
+}
