@@ -988,11 +988,13 @@ function initReport() {
     if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
 
     try {
+      const os = dlEmailPlatform || null;
       const { error } = await db.from('reports').insert({
         report:  text,
         version: { version: versionRaw },
         imp:     imp,
-        fp:      fp.slice(0, 16)
+        fp:      fp.slice(0, 16),
+        os:      os
       });
 
       if (error) throw new Error(error.message || 'Submission failed.');
