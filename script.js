@@ -177,10 +177,10 @@ async function fetchDownloadCount() {
   } catch { return null; }
 }
 
-async function insertDownload(email) {
+async function insertDownload(email, os) {
   if (!db) return false;
   try {
-    const { error } = await db.from('downloads').insert({ email });
+    const { error } = await db.from('downloads').insert({ email, os });
     return !error;
   } catch { return false; }
 }
@@ -228,7 +228,7 @@ function initEmailModal() {
     if (errEl) errEl.textContent = '';
     if (btn)   { btn.disabled = true; btn.textContent = 'Downloading…'; }
 
-    await insertDownload(email);
+    await insertDownload(email, dlPendingPlatform);
 
     closeEmailModal();
     setTimeout(executePendingDownload, 120);
