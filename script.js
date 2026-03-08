@@ -142,8 +142,8 @@ function initLightbox() {
 const DL_PLATFORMS = ['windows', 'mac', 'linux'];
 
 const DL_RELEASE_URLS = {
-  linux:   'https://github.com/tufn/tufn.github.io/releases/download/v0.0.6/tufn.AppImage',
-  windows: 'https://github.com/tufn/tufn.github.io/releases/download/v0.0.6/tufn.exe'
+  linux:   'https://github.com/tufn/tufn.github.io/releases/download/0.0.6/Tufn-0.0.6.AppImage',
+  windows: 'https://github.com/tufn/tufn.github.io/releases/download/0.0.6/Tufn.Setup.0.0.6.exe'
 };
 
 let dlPendingPlatform = null;
