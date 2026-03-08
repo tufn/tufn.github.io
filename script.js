@@ -988,7 +988,8 @@ function initReport() {
     if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
 
     try {
-      const os = dlEmailPlatform || null;
+      const ua = navigator.userAgent;
+      const os = /windows/i.test(ua) ? 'windows' : /mac os/i.test(ua) ? 'mac' : /linux/i.test(ua) ? 'linux' : null;
       const { error } = await db.from('reports').insert({
         report:  text,
         version: { version: versionRaw },
