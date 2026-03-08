@@ -149,6 +149,7 @@ const DL_RELEASE_URLS = {
 let dlPendingPlatform = null;
 let dlPendingManifest = null;
 let dlDonationsData   = null;
+let dlEmailPlatform   = null;
 
 function fmtBytes(b) {
   if (!b || b <= 0) return '';
@@ -186,6 +187,7 @@ async function insertDownload(email, os) {
 }
 
 function openEmailModal() {
+  dlEmailPlatform = dlPendingPlatform;
   const overlay = $('dl-email-modal');
   if (!overlay) return;
   const input = $('dl-email-input');
@@ -228,7 +230,7 @@ function initEmailModal() {
     if (errEl) errEl.textContent = '';
     if (btn)   { btn.disabled = true; btn.textContent = 'Downloading…'; }
 
-    await insertDownload(email, dlPendingPlatform);
+    await insertDownload(email, dlEmailPlatform);
 
     closeEmailModal();
     setTimeout(executePendingDownload, 120);
